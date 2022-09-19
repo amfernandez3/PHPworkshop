@@ -13,7 +13,10 @@
     $edad = 12;
     $edadTexto = "12";
     echo "<h1> Página principal de pruebas </h1>"
-        . "El valor de una variable es: " . $edad;
+        . "<br>El valor de una variable es: " . $edad;
+        if($edad > 17){
+            echo("El valor es mayor de 7.");
+        }
     ?>
 </body>
 
