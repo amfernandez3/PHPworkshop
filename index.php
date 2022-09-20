@@ -17,6 +17,7 @@
         if($edad > 17){
             echo("El valor es mayor de 7.");
         }
+        
     ?>
 </body>
 
