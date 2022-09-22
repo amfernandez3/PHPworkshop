@@ -11,4 +11,8 @@ print_r($mi_array);
 
 //Añadir elementos
 $mi_array["A"] = "mensaje";
+
+//? Control de estados
+
+
 ?>
