@@ -1,6 +1,9 @@
+<?php
 /**
-Test zone 
+Trabajo con permisos y desplazamiento de bits
 */
-echo ("Zona de testeo de aplicaciones.");
-$edad = 15;
-echo($edad);
+
+$numero  = 5;
+
+
+?>
