@@ -4,18 +4,18 @@ recorrerArray($arr);
 
 
 function recorrerArray($arr) {
-
-    //print_r($arr);
-    foreach($arr as $value) {
-        if(is_array($value)){
-            
-            foreach($value as $value2){
-                print($value);
-            }
+    foreach($arr as $salida){
+        if(is_array($salida)){
+            $cont = 0;
+         foreach($salida as $salida2){
+             echo("Dato de array interno: Índice [$cont] valor: " . $salida2). "\n";
+             $cont++;
+         }
+         
         }
         else{
-            print($value);
-        }
-      } 
+         echo("Dato simple: " .$salida. "\n");
+     }
+     } ;
 }
 ?>
