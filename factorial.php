@@ -16,7 +16,7 @@ function Factorial($numPrueba){
 
    
 
-$numPrueba = 4; 
+$numPrueba = 5; 
 $resultado = Factorial($numPrueba); 
 echo "Factorial de : " . $numPrueba . " = " . $resultado;
 
