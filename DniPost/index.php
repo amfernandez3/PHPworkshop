@@ -9,8 +9,10 @@ if ($_SERVER["REQUEST_METHOD"]== "POST") {
             $dni1->setdni($_POST["DNI"]);
             $dni1->calcularLetra();
             $dniFlag = true;
+           
         } else {
             $errorDni = true;
+            
         }
     }
     if (isset($_POST['NIF'])) {

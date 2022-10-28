@@ -41,12 +41,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             padding-top: 30px;
         }
         .ocultar{
-            <?php
-
-                if (isset($alumnoFlag) && $alumnoFlag && $alumno->getNif()->getEsValido() == true) {
+            <?php 
+            
+                if(isset($alumnoFlag) && $alumnoFlag && $alumno->getNif()->getEsValido() == true){
                     echo "display:none";
                 }
-?>
+            ?>
             
         }
     </style>
@@ -55,7 +55,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <body>
     <h3 class="card text-primary">REGISTRO DE ALUMNOS</h3>
-    <?php //Si existe un alumno y es correcto
+    <?php //Si existe un alumno y es correcto 
     if (isset($alumnoFlag) && $alumnoFlag) {
         if ($alumno->getNif()->getEsValido() == false) {
             echo "Introduce un NIF correcto.";
@@ -65,26 +65,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } elseif (isset($alumnoFlag) && !$alumnoFlag) {
         echo "Faltan datos, rellena todos los campos.";
     } elseif (isset($errorAlumno) && $errorAlumno) {
+        //Este supuesto V
         echo "Faltan datos, rellena todos los campos.";
     }
-?>
+    ?>
     <div class="text-primary">
 
-        <form method="POST" action="" class="card ocultar">
+        <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" class="card ocultar">
             <p>
-                <input type="text" name="Nombre" placeholder="Nombre" class="text-primary" value="<?php if (!empty($_POST['Nombre'])) {
-                    echo $_POST['Nombre'];
-                } ?>">
+                <input type="text" name="Nombre" placeholder="Nombre" class="text-primary" value="<?php if(!empty($_POST['Nombre'])) echo $_POST['Nombre']; ?>">
             </p>
             <p>
-                <input type="text" name="Apellidos" placeholder="Apellidos" class="text-primary" value="<?php if (!empty($_POST['Apellidos'])) {
-                    echo $_POST['Apellidos'];
-                } ?>">
+                <input type="text" name="Apellidos" placeholder="Apellidos" class="text-primary" value="<?php if(!empty($_POST['Apellidos'])) echo $_POST['Apellidos']; ?>">
             </p>
             <p>
-                <input type="text" name="NIF" placeholder="NIF" class="text-primary" value="<?php if (!empty($_POST['NIF'])) {
-                    echo $_POST['NIF'];
-                } ?>">
+                <input type="text" name="NIF" placeholder="NIF" class="text-primary" value="<?php if(!empty($_POST['NIF'])) echo $_POST['NIF']; ?>">
             </p>
             <p>SEXO:
                 <select class="text-primary" name="Sexo" id="Sexo">
