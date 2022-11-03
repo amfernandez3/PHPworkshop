@@ -1,25 +1,20 @@
 <?php
-session_start();
+$numeroAleatorio;
+$contador = 0;
+$seguirJugando;
+$ganador = false;
+$historico;
 
-if (isset($_SESSION['numeroAleatorio']) && isset($_SESSION['contador'])) {
-    //Si el número aleatorio ya está definido
-
-    if (isset($_SESSION['numeroAleatorio']) && $_SESSION['contador'] <= 0) {
-        session_destroy();
-    }
-} else {
-    //Si el número aleatorio aún no está definido
-    $_SESSION['numeroAleatorio'] = rand(0, 100);
-    $_SESSION['contador'] = 4;
-    $_SESSION['seguirJugando'] = true;
-    $_SESSION['ganador'] = false;
-    $_SESSION['historico'] = array();
+if (isset($_COOKIE['numero'])) {
+ 
+}
+else{
+    setcookie('color',$_POST['color'], time()+3600);
 }
 if (!empty($_POST['numero']) && $_SESSION['contador'] > 0) {
     //Se ha recibido un numero usando post
 
-    //array_push($_SESSION['historico'],$_POST['numero']);
-    $_SESSION['historico'][]=$_POST['numero'];
+    array_push($_SESSION['historico'],$_POST['numero']);
     $_SESSION['contador']--;
     if ($_POST['numero'] == $_SESSION['numeroAleatorio']) {
         $_SESSION['ganador'] = true;
