@@ -1,5 +1,4 @@
 <?php
-
 session_start();
 
 if (isset($_SESSION['numeroAleatorio']) && isset($_SESSION['contador'])) {
@@ -14,10 +13,12 @@ if (isset($_SESSION['numeroAleatorio']) && isset($_SESSION['contador'])) {
     $_SESSION['contador'] = 4;
     $_SESSION['seguirJugando'] = true;
     $_SESSION['ganador'] = false;
+    $_SESSION['historico'] = array();
 }
 if (!empty($_POST['numero']) && $_SESSION['contador'] > 0) {
     //Se ha recibido un numero usando post
 
+    array_push($_SESSION['historico'],$_POST['numero']);
     $_SESSION['contador']--;
     if ($_POST['numero'] == $_SESSION['numeroAleatorio']) {
         $_SESSION['ganador'] = true;
@@ -33,11 +34,10 @@ if (!empty($_POST['numero']) && $_SESSION['contador'] > 0) {
     //echo "Introduce un número válido.";
 }
 
-
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
@@ -83,6 +83,10 @@ if (!empty($_POST['numero']) && $_SESSION['contador'] > 0) {
             </form>
         <?php } ?>
     <?php } ?>
+
+    <div class="historico">
+            <p>Últimos intentos: <?php  var_dump($_SESSION['historico']) ?></p>
+    </div>
 
 </body>
 
