@@ -1,33 +1,72 @@
 <?php
-$numeroAleatorio;
-$contador = 0;
-$seguirJugando;
-$ganador = false;
-$historico;
+//include_once "./encriptadoCookies.php";
+$mensaje = "";
+$contador = 5;
+$random = rand(0, 100);
+$partidas = 0;
 
-if (isset($_COOKIE['numero'])) {
- 
-}
-else{
-    setcookie('color',$_POST['color'], time()+3600);
-}
-if (!empty($_POST['numero']) && $_SESSION['contador'] > 0) {
-    //Se ha recibido un numero usando post
+/*
+//Variables encriptado:
+$partidasEncriptado = $encriptar($partidas);
 
-    array_push($_SESSION['historico'],$_POST['numero']);
-    $_SESSION['contador']--;
-    if ($_POST['numero'] == $_SESSION['numeroAleatorio']) {
-        $_SESSION['ganador'] = true;
-    } elseif ($_POST['numero'] > $_SESSION['numeroAleatorio']) {
-        echo "</br>El numero " . $_POST['numero'] . " es mayor que el secreto.</br>";
-    } else {
-        echo "</br>El numero " . $_POST['numero'] . " es menor que el secreto.</br>";
-    }
-} elseif ($_SESSION['contador'] <= 0) {
-    $_SESSION['seguirJugando'] = false;
+// Como usar las funciones para encriptar y desencriptar.
+$dato = "Esta es informaciÃ³n importante";
+//Encripta informaciÃ³n:
+$dato_encriptado = $encriptar(urlencode($dato));
+//Desencripta informaciÃ³n:
+$dato_desencriptado = $desencriptar(urldecode($dato_encriptado));
+$desencriptado2 = str_replace(' ','+', $dato_encriptado );
+echo 'Dato encriptado: '. $dato_encriptado . '<br>';
+echo 'Dato desencriptado: '. $dato_desencriptado . '<br>';
+echo 'Dato desencriptado: '. $desencriptado2 . '<br>';
+echo "IV generado: " . $getIV();
+
+*/
+
+//Si no existe la cookie contador
+if (!isset($_COOKIE["contador"])) {
+    setcookie("contador", $contador, time() + 3600);
+    setcookie("random", $random, time() + 3600);
+    //Si no existe la cookie partidas se crea.
+    $mensaje = "Introduce un numero";
 } else {
-    //No se ha recibido un numero a través de post
-    //echo "Introduce un número válido.";
+    //Si existe asignamos su valor a la variable contador
+    $contador = $_COOKIE["contador"];
+}
+if (isset($_COOKIE['partidas'])) {
+
+    $partidas = $_COOKIE['partidas'];
+} else {
+    //Aqui solo entra cuando la cookie caduca
+    setcookie('partidas', $partidas, time() + 3600 * 24 * 30);
+}
+
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["numero"]) && isset($_COOKIE["contador"]) && $_COOKIE["contador"] > 0) {
+    $contador--;
+    //Almacenamos en la cookie el cambio de valor.
+    setcookie("contador", $contador, time() + 3600);
+
+    if ($_COOKIE["random"] == $_POST["numero"]) {
+        $mensaje = "Has acertado! felicidades.";
+        setcookie("contador", "", time() - 3600);
+
+        //Almacenamos en la cookie el cambio de valor.
+        ++$partidas;
+        setcookie('partidas', $partidas, time() + 3600 * 24 * 30);
+    }
+    if ($_COOKIE["random"] > $_POST["numero"]) {
+        $mensaje = "El número: " . $_POST["numero"] . " es menor que el secreto";
+    }
+    if ($_COOKIE["random"] < $_POST["numero"]) {
+        $mensaje = "El número: " . $_POST["numero"] . " es mayor que el secreto";
+    }
+}
+if (isset($_COOKIE["contador"]) && $_COOKIE["contador"] <= 1) {
+    $mensaje = "Has perdido, el número era: ". $random ;
+    setcookie("contador", "", time() - 3600);
+    ++$partidas;
+    setcookie('partidas', $partidas, time() + 3600 * 24 * 30);
+    //Almacenamos en la cookie el cambio de valor.
 }
 
 ?>
@@ -48,42 +87,52 @@ if (!empty($_POST['numero']) && $_SESSION['contador'] > 0) {
             margin-top: 15px;
         }
     </style>
-    <title>Document</title>
+    <title>Adivinar número Cookies</title>
 </head>
 
 <body>
-    <h2 class="font-weight-bold" style="text-align: center;">Adivina el número secreto! (entre 0 - 100)</h2>
+    <h3 class="font-weight-bold" style="text-align: center;">Adivina el número secreto! (entre 0 - 100)</h3>
+    <p><br> <?php echo $mensaje; ?> </p>
+    <?php
+    if ($contador > 0 && $mensaje != "Has acertado") {
+    ?>
 
-    <?php if ($_SESSION['seguirJugando'] && $_SESSION['ganador'] == false) { ?>
-
-        <form action="" method="post" class="text-primary">
-            <input type="text" name="numero" id="numero">
+        <form action="" method="post">
+            <input type="text" name="numero" id="numero" value="">
             <input type="submit" value="enviar">
-            </br>
-            <?php echo "</br>Quedan " . $_SESSION['contador'] + 1 . " intentos."; ?>
-
         </form>
-        <?php } else {
-        if ($_SESSION['ganador'] == true) {
-        ?>
-            <h3 class="text-success">Has acertado!</h3>
-            <p>El número era: <?php echo $_SESSION['numeroAleatorio'] ?></p>
-            <form action="" method="post">
-                <input type="submit" value="ReiniciarJuego" name="reiniciarJuego">
-            </form>
-        <?php } else { ?>
-            <h3 class="text-danger">Has perdido.</h3>
-            <p>El número era: <?php echo $_SESSION['numeroAleatorio'] ?></p>
-            <form action="" method="post">
-                <input type="submit" value="Reiniciar juego" name="reiniciarJuego">
-            </form>
-        <?php } ?>
-    <?php } ?>
+        <p><br> <?php echo "Intentos restantes: " . $contador; ?> </p>
 
-    <div class="historico">
-            <p>Últimos intentos: <?php  echo implode(',', $_SESSION['historico']) ?></p>
-    </div>
+    <?php
+    } else {
+        $partidas++;
+        $_COOKIE['partidas'] = $partidas;
 
+    ?>
+        <form action="" method="post">
+            <input type="submit" value="Reiniciar Juego">
+        </form>
+
+
+    <?php
+    }
+    ?>
+    <?php
+    //Controlador de alteración de cookie
+    if (1 == 1) {
+    ?>
+        <p><br> <?php echo "Partidas jugadas: " . $partidas; ?> </p>
+    <?php
+    } 
+    //Si la Cookie fue alterada:
+    else {
+    ?>
+    <?php
+    }
+    ?>
+<?php
+
+?>
 </body>
 
 </html>
