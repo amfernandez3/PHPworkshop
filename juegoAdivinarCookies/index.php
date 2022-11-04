@@ -4,6 +4,10 @@ $mensaje = "";
 $contador = 5;
 $random = rand(0, 100);
 $partidas = 0;
+$partidasEncriptado = hash('sha1',$partidas);
+$modificadaCookie = true;
+$contadorAux = 0;
+$trampa = false;
 
 /*
 //Variables encriptado:
@@ -33,12 +37,26 @@ if (!isset($_COOKIE["contador"])) {
     //Si existe asignamos su valor a la variable contador
     $contador = $_COOKIE["contador"];
 }
+//Si existe la cookie partidas (HASH) comprobamos no modificado
 if (isset($_COOKIE['partidas'])) {
+    while($modificadaCookie && $contadorAux < 100){
 
-    $partidas = $_COOKIE['partidas'];
+        if(hash('sha1',$contadorAux) == $_COOKIE['partidas']){
+            $modificadaCookie = false;
+        }
+        $contadorAux++;
+    }
+    if($modificadaCookie){
+        $trampa = true;
+        $partidas = 0;
+    }
+    else{
+        $partidas = $contadorAux;
+    }
+    
 } else {
     //Aqui solo entra cuando la cookie caduca
-    setcookie('partidas', $partidas, time() + 3600 * 24 * 30);
+    setcookie('partidas', $partidasEncriptado, time() + 3600 * 24 * 30);
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["numero"]) && isset($_COOKIE["contador"]) && $_COOKIE["contador"] > 0) {
@@ -51,8 +69,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["numero"]) && isset($_C
         setcookie("contador", "", time() - 3600);
 
         //Almacenamos en la cookie el cambio de valor.
-        ++$partidas;
-        setcookie('partidas', $partidas, time() + 3600 * 24 * 30);
+       
+        $partidasEncriptado = hash('sha1',$partidas);
+        setcookie('partidas', $partidasEncriptado, time() + 3600 * 24 * 30);
     }
     if ($_COOKIE["random"] > $_POST["numero"]) {
         $mensaje = "El número: " . $_POST["numero"] . " es menor que el secreto";
@@ -64,8 +83,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["numero"]) && isset($_C
 if (isset($_COOKIE["contador"]) && $_COOKIE["contador"] <= 1) {
     $mensaje = "Has perdido, el número era: ". $random ;
     setcookie("contador", "", time() - 3600);
-    ++$partidas;
-    setcookie('partidas', $partidas, time() + 3600 * 24 * 30);
+    $partidasEncriptado = hash('sha1',$partidas);
+    setcookie('partidas', $partidasEncriptado, time() + 3600 * 24 * 30);
     //Almacenamos en la cookie el cambio de valor.
 }
 
@@ -121,7 +140,7 @@ if (isset($_COOKIE["contador"]) && $_COOKIE["contador"] <= 1) {
     //Controlador de alteración de cookie
     if (1 == 1) {
     ?>
-        <p><br> <?php echo "Partidas jugadas: " . $partidas; ?> </p>
+        <p><br> <?php if($trampa){echo "Reinicio por tramposo.</br>";} echo "Partidas jugadas: " . $partidas; ?> </p>
     <?php
     } 
     //Si la Cookie fue alterada:
