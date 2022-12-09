@@ -30,24 +30,33 @@ require_once("Controlador.php");
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         body {
             font-family: 'Times New Roman', Times, serif;
             display: flex;
             align-items: center;
+            justify-content: center;
             flex-direction: column;
+            background-image: url("./assets/Screenshot_1.jpg");
+            background-size: cover;
+
+        }
+        section{
+            margin-top: 50px;
+        }
+        caption{
+            font-weight: bold;
         }
 
         .resultado {
-            border: solid 1px black;
             padding: 10px;
             height: 200px;
             text-align: center;
         }
 
         .formularioEnvio {
-            border: solid 1px black;
             padding: 10px;
         }
 
@@ -56,8 +65,8 @@ require_once("Controlador.php");
         }
 
         .infoJuego {
-            border: solid 1px black;
             padding: 10px;
+            text-align: center;
         }
 
         .tabla {
@@ -69,7 +78,7 @@ require_once("Controlador.php");
             margin-top: 10px;
             justify-items: space-around;
         }
-        .captioFin{
+        .captionFin{
             text-align: center;
         }
 
@@ -87,16 +96,17 @@ require_once("Controlador.php");
             margin: 10px;
             text-align: center;
         }
+       
     </style>
     <title>Document</title>
 </head>
 
 <body>
-    <section>
+    <section class="border border-primary">
         <div class="resultado">
-            <caption>ACERTADAS:</caption>
+            <caption><b>ACERTADAS:</b></caption>
             <table class="tabla">
-                <tr>
+                <tr class="table-primary">
                     <?php
                     if (isset($controlador1)) {
                         foreach ($controlador1->getTablero()->getFilaGanadoraActual() as $clave => $valor) {
@@ -114,9 +124,9 @@ require_once("Controlador.php");
                     ?>
                 </tr>
             </table>
-            <caption>HAS INTRODUCIDO:</caption>
+            <caption><b>HAS INTRODUCIDO:</b></caption>
             <table class="tabla">
-                <tr>
+                <tr class="table-primary">
                     <?php
                     if (isset($controlador1)) {
                         foreach ($filaEntrada->getColores() as $clave => $valor) {
@@ -138,7 +148,7 @@ require_once("Controlador.php");
 
         <?php if($partidaGanada == false ){ 
         ?>
-        <div class="formularioEnvio">
+        <div class="formularioEnvio border border-primary">
             <form action="" method="POST">
                 <select name="color1" id="color1">
                 <option value="white" selected="selected">Color:</option>
@@ -190,12 +200,12 @@ require_once("Controlador.php");
             ?>
         </div>
         <div class="infoJuego">
-            <p>Intentos: <?php if(isset($_SESSION["tablero"]) && isset($controlador1)){ echo $controlador1->getTablero()->getNumeroIntentos();}else {echo 0;}?></p>
+            <p><b>INTENTOS: <?php if(isset($_SESSION["tablero"]) && isset($controlador1)){ echo $controlador1->getTablero()->getNumeroIntentos();}else {echo 0;}?></b></p>
         </div>
-        <div class="infoJuego">
+        <div class="infoJuego border border-primary">
         <table class="tabla">
             <caption>Pista (colores presentes):</caption>
-                <tr>
+                <tr class="table-primary pista">
                     <?php
 if (isset($controlador1)) {
     if ($controlador1->getTablero()->getFilaColoresPresentes() != null) {
