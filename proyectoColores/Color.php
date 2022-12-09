@@ -1,27 +1,37 @@
 <?php
 class Color{
     // @param id -> define el color del 
-    private $id;
+    private $colorNombre;
 
-    function __construct($id = null){
-        
+    function __construct($colorNombre){
+                $this->setNombreColor($colorNombre);
     }
 
-    function getId(){
+    function getColorNombre(){
 
-        return $this->id;
+        return $this->colorNombre;
     }
 
     function compararColores($color){
-        if($color->id == $this->id){
-            echo "Los id de los colores son : " . $color->id . "y " . $this->id;
+        if($color->colorNombre == $this->colorNombre){
+            echo "Los id de los colores son : " . $color->getColorNombre() . "y " . $this->getColorNombre();
+            $this->setAcertado();
             return true;
         }
         else{
+            echo("Los colores no son iguales");
             return false;
         }
     }
+
+
+    function setNombreColor($colorNombre){
+        $this->colorNombre = $colorNombre;
+    }
     
+    function setAcertado(){
+        $this->acertado = true;
+    }
 }
 
 ?>
