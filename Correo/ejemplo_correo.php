@@ -9,12 +9,13 @@ $mensaje = "Introduce tus datos";
 if (isset($_POST["direccion"]) && isset($_POST["asunto"])&& isset($_POST["mensaje"])) {
     //echo $_POST["direccion"];
     $envio1 = new Envio($_POST["direccion"], $_POST["asunto"], $_POST["mensaje"]);
+    $controladorMailer1 = new ControladorMailer();
+    $controladorMailer1->envioMensaje($envio1);
 } else {
     $mensaje = "Introduce bien los datos";
 }
 
-$controladorMailer1 = new ControladorMailer();
-$controladorMailer1->envioMensaje($envio1);
+
 
 
 ?>

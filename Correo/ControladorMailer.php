@@ -7,36 +7,37 @@ use PHPMailer\PHPMailer\PHPMailer;
 
 class ControladorMailer{
     private $mail;
-    $this->mail = new PHPMailer();
-
+   
     public function __construct()
     {
-        $emisor1 = new Emisor("10.10.32.7", 25);
-        
-        $mail->IsSMTP();
+        $emisor1 = new Emisor("169.254.108.118", 25);
+        $this->mail = new PHPMailer();
+
+        $this->mail->IsSMTP();
         // cambiar a O para no ver mensajes de error
-        $mail->SMTPDebug = 0;
-        $mail->SMTPAuth = false;
+        $this->SMTPDebug = 2;
+        $this->mail->SMTPAuth = false;
         //$mail->SMTPSecure = "tls";
-        $mail->Host = $emisor1->getHost();
-        $mail->Port = $emisor1->getPuerto();
+        $this->mail->Host = $emisor1->getHost();
+        $this->mail->Port = $emisor1->getPuerto();
         // introducir usuario de google
-        $mail->Username = "";
+        $this->mail->Username = "";
         // introducir clave
-        $mail->Password = "";
+        $this->mail->Password = "";
 
         $address = "miServidor@servidor.com";
-        $mail->AddAddress($address, "Test");
+        $this->mail->AddAddress($address, "Test");
         
     }
 
     function envioMensaje(Envio $envio){
-        $mail->SetFrom($envio->getDireccion(), $envio->getDireccion());
-        $mail->Subject = ($envio->getAsunto());
-        $mail->MsgHTML($envio->getMensaje());
-        $resul = $mail->Send();
+      //  echo $envio->getDireccion();
+        $this->mail->SetFrom($envio->getDireccion(), $envio->getDireccion());
+        $this->mail->Subject = ($envio->getAsunto());
+        $this->mail->MsgHTML($envio->getMensaje());
+        $resul = $this->mail->Send();
         if (!$resul) {
-            echo "Error". $mail->ErrorInfo;
+            echo "Error". $this->mail->ErrorInfo;
         } else {
             echo "Enviado";
         }
