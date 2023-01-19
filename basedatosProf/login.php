@@ -22,7 +22,7 @@ if ($_SERVER["REQUEST_METHOD"]== "POST" && isset($_POST["correo"])&& isset($_POS
         } else {
             $_SESSION["usuario"]["idUsuario"] = $usuario->getIdUsuario();
             $_SESSION["usuario"]["nombre"] = $usuario->getNombre();
-            header("location:index.php");
+            header("location: index.php");
             exit();
         }
 

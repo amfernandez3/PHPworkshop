@@ -1,5 +1,5 @@
 <?php
-
+//La conexión con la base de datos
 class BD {
     private static $conexion;
     private function __construct()
