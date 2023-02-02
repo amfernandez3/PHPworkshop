@@ -9,13 +9,11 @@ if ($_SERVER["REQUEST_METHOD"]== "POST" && !empty($_POST["entrada"])){
     } catch (Exception $e) {
         echo 'Datos introducidos no válidos: ',  $e->getMessage(), "\n";
     }
-  
 }
 else{
     if(isset($_POST["entrada"])){
         generarDatos($_POST["entrada"]);
     }
-    
 }
 if(isset($_POST["entrada"])){
     guardarSesion($_POST["entrada"]);   

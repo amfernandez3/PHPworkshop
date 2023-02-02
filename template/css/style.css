@@ -1,0 +1,13 @@
+body{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    max-width: 500px;
+    border: 1px solid black;
+
+}
+
+nav > ul > li{
+    padding: 15px;
+}
