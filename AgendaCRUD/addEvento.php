@@ -25,17 +25,12 @@ if ($_SERVER["REQUEST_METHOD"]== "POST") {
         <article>
             <h3>Formulario evento</h3>
             <form action="" method="POST">
-                <label for="id_evento">Id evento</label>
-                <input type="number" name="id_evento">
                 <label for="nombreEvento">Nombre del evento</label>
                 <input type="text" name="nombreEvento">
-                <input type="submit" value="login">
                 <label for="fecha_inicio">Fecha inicio</label>
-                <input type="date" name="fecha_inicio">
+                <input type="text" name="fecha_inicio">
                 <label for="fecha_fin">Fecha fin</label>
-                <input type="date" name="fecha_fin">
-                <label for="correo">ID usuario</label>
-                <input type="text" name="id_usuario">
+                <input type="text" name="fecha_fin">
                 <input type="submit" value="registrar">
             </form>
         </article>

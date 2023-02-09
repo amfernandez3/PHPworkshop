@@ -1,6 +1,6 @@
 <footer>
 <div class="alert alert-primary" role="alert">
-  Esto es un pie de página!
+  <p>Esto es un pie de página</p>
 </div>
 </footer>
 </body>
