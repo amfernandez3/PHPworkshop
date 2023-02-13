@@ -25,17 +25,6 @@ class Evento{
             $this->id_evento = $id_evento;
             return $this;
         }
- 
-        public function getNombre()
-        {
-            return $this->nombre;
-        }
-
-        public function setNombre($nombre)
-        {
-            $this->nombre = $nombre;
-            return $this;
-        }
 
         public function getFecha_inicio()
         {
@@ -56,6 +45,17 @@ class Evento{
         public function setFecha_fin($fecha_fin)
         {
             $this->fecha_fin = $fecha_fin;
+            return $this;
+        }
+
+        public function getNombre()
+        {
+            return $this->nombre;
+        }
+
+        public function setNombre($nombre)
+        {
+            $this->nombre = $nombre;
             return $this;
         }
 
