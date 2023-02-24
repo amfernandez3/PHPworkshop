@@ -1,4 +1,10 @@
 <?php
+
+//En este código se gestionará la lógica de modificación de los eventos
+/*
+Requiere el uso de evento como ud de datos
+Este código recibe información de un evento, y permite modificarlo volcando la nueva información en las sesiones respectivas 
+*/
 require_once("Evento.php");
 if(!isset($_SESSION)) 
 { 

@@ -37,6 +37,7 @@ else{
             <td>fecha_inicio</td>
             <td>fecha_fin</td>
             <td>id_usuario</td>
+            <td>Acciones</td>
         </tr>
         <?php
             foreach ($eventos as $id => $evento) {
@@ -47,7 +48,7 @@ else{
             <td><?= $evento->getFecha_inicio()->format("d-m-Y T H:i ") ?></td>
             <td><?= $evento->getFecha_fin()->format("d-m-Y T H:i ") ?></td>
             <td><?= $evento->getId_usuario() ?></td>
-            <td><a  href="EditarEvento.php?id=<?= $id?>">Editar</a></td>
+            <td><a  href="EditarEvento.php?id=<?= $id?>"><img src="./assets/icons/edit.png" alt="edit" width="20px" height="20px"></a><a  href="DeleteEvento.php?id=<?= $id?>"><img src="./assets/icons/delete.png" alt="delete" width="20px" height="20px"></a></td>
         </tr>
         <?php } ?>
     </table>

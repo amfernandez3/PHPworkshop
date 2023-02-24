@@ -1,6 +1,14 @@
 <?php
-require_once("Usuario.php");
-require_once("SelectorPersistente.php");
+/** Página de login del sistema
+ *  Se ofrece la posibilidade de hacer login al usuario o de redirigir a la página de registro
+ * 
+ * Centrándonos en la funcionalidad de login: cargamos los modelos de usuario y de selectorPersistencia
+ * 
+ * 
+ */
+
+require_once("../modelo/usuario/Usuario.php");
+require_once("../modelo/persistenciaDatos/SelectorPersistencia.php");
 $mensaje = "";
 if(session_status() !== PHP_SESSION_ACTIVE){
     session_start();
@@ -36,7 +44,7 @@ if ($_SERVER["REQUEST_METHOD"]== "POST" && isset($_POST["correo"])&& isset($_POS
 
             $_SESSION["sistemaGuardado"] = $_POST['sistemaguardar'];
         
-            header("location:index.php");
+            header("location:../index.php");
             exit();
     } else {
         $mensaje = "Usuario y/o contraseña incorrectos";

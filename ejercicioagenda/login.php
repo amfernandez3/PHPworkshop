@@ -1,4 +1,9 @@
 <?php
+/*
+La lógica del login es la siguiente: un formulario que envía los datos al propio documento, donde son tratados:
+    Si envian todos los campos se crea un nuevo usuario con ellos, si este nuevo usuario tiene unos datos idénticos a los de control
+    se permite el login y se almacenan en sesiones sus datos. Tras ello volvemos al index, donde el código derivará a agenda.
+*/
 require_once("Usuario.php");
 $mensaje = "";
 if(!session_start()){
