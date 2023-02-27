@@ -9,6 +9,13 @@ class SelectorPersistente{
         return $_SESSION["sistemaGuardado"];
     }
 
+    static private  function getTipoUsuario() {
+        if(session_status() !== PHP_SESSION_ACTIVE){
+            session_start();
+        }
+        return $_SESSION["sistemaGuardado"];
+    }
+
     static public function getEventoPersistente(){
         $obj =null;
         switch(self::getTipoEvento()){
@@ -33,7 +40,7 @@ class SelectorPersistente{
 
     static public function getUsuarioPersistente(){
         $obj =null;
-        switch(self::getTipoEvento()){
+        switch(self::getTipoUsuario()){
             case 0: 
                 $obj =  new UsuarioSesiones();
                 break;

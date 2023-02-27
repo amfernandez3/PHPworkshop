@@ -1,6 +1,6 @@
 <?php
 /** Página de login del sistema
- *  Se ofrece la posibilidade de hacer login al usuario o de redirigir a la página de registro
+ *  Se ofrece la posibilidad de hacer login al usuario o de redirigir a la página de registro
  * 
  * Centrándonos en la funcionalidad de login: cargamos los modelos de usuario y de selectorPersistencia
  * 

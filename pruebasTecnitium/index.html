@@ -1,20 +1,4 @@
-<?php 
-session_start();
-$nombre;
 
-if($_SERVER['REQUEST_METHOD']== 'POST'){
-    if(!empty($_POST['nombre'])){
-        $_SESSION['nombre'] = $_POST['nombre'];
-        $nombre = $_SESSION['nombre'];
-    }
-    else{
-        $nombre = $_SESSION['nombre'];
-    }
-}
-else{
-}
-
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,11 +8,9 @@ else{
     <title>Document</title>
 </head>
 <body>
-<?php if(isset($nombre)){
-        echo "<h1>Hola! ". $nombre ."</h1>";
-    }
-    ?>
+
   <form action="" method="POST">
+    <label for="nombre">Introduce tu nombre: </label>
     <input type="text" id="nombre" value="" name="nombre">
     <input type="submit" value="enviar">
   </form>  

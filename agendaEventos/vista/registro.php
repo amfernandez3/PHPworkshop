@@ -1,4 +1,14 @@
 <?php
+/**
+ * La función de registro debe permitir incluir nuevos datos en la persistencia seleccionada.
+ * Permitirá posteriormente el acceso usando el login.
+ * 
+ * Secuencia de flujo: 
+ * 1 - Se envían datos por formulario.
+ * 2 - Ahora se cargan los datos de los usuarios de la sesión en una variable.
+ * 3 - Para el registro con sesiones se añaden los datos introducidos en la variable usuarios. 
+ */
+
 require_once("../modelo/usuario/Usuario.php");
 require_once("../modelo/persistenciaDatos/SelectorPersistencia.php");
 $mensaje = "";

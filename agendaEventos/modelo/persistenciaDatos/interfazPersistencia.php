@@ -1,6 +1,6 @@
 <?php
-//Esta interfaz define la estructura y funcionamiento de los tres tipos de persistencia de datos de la aplicación
-interface PersistentInterface{
+//Esta interfaz define la estructura y funcionamiento de los tres tipos de persistencia de datos de la aplicación que la implementarán
+interface interfazPersistencia{
     
 
     function guardar($datos);
