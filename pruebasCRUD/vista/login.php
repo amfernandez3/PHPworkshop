@@ -1,11 +1,7 @@
 <?php
 /*
-Importamos el código que utilizaremos
 Contrastamos la información recibida por POST con la del modelo de persistencia seleccionado
 */
-require_once("../modelo/usuario/usuario.php");
-require_once("../modelo/persistenciaDatos/selectorPersistencia.php");
-require_once("../modelo/conexionDB.php");
 $mensaje = "";
 if(session_status() !== PHP_SESSION_ACTIVE){
     session_start();
@@ -16,11 +12,16 @@ if(session_status() !== PHP_SESSION_ACTIVE){
 
         $correo = $_POST["correo"];
         $passwd = $_POST["password"];
-        $_SESSION["guardarEstado"] = $_POST['volcarSistema'];
+        $_SESSION["correoUsuario"] = $_POST['correo'];
 
-        $usuarios = SelectorPersistente::getUsuarioPersistente()->listar();
-        //var_dump($usuarios);
-        foreach ($usuarios as $id => $usuario) {
+        /**
+         * Cotejamos los datos introducidos con los de la base.
+         */
+        if($correo == "alejandro@gmail.com" && $passwd == "abc123."){
+            header("location:../index.php");
+        }
+
+        /* foreach ($usuarios as $id => $usuario) {
 
             if($usuario->getCorreo() == $correo && $usuario->getPassword() == $passwd){
                 $_SESSION["correo"] = $correo;
@@ -30,7 +31,7 @@ if(session_status() !== PHP_SESSION_ACTIVE){
             }else{
                 $mensaje = "Usuario no encontrado";
             }
-        }  
+        }  */ 
     }
 
 ?>
@@ -53,14 +54,9 @@ if(session_status() !== PHP_SESSION_ACTIVE){
         <form action="" method="post">
                 <input class="inpt" type="email" name="correo" id="correo" required placeholder="Correo de usuario">
                 <input class="inpt" type="password" name="password" id="password" required placeholder="Contraseña">
-                <select class="volcarSistema" name="volcarSistema" required>
-                    <option value="0">Sesiones</option>
-                    <option value="1">MySQL</option>
-                    <option value="2">MongoDB</option>
-                </select>
-                <input class="boton" type="submit" value="Entrar">  
+                <input class="boton" type="submit" value="Login">  
         </form>
-        <a  href="registro.php">Nuevo usuario</a></td>
+        <a  href="registroSesiones.php">Registrar en sesiones</a></td>
     </div>
    
 </body>

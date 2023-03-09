@@ -34,7 +34,7 @@ if ($_SERVER["REQUEST_METHOD"]== "POST" && isset($_POST["correo"])&& isset($_POS
             $_SESSION["usuario"]["idUsuario"] = $usuarionew->getId_usuario();
             $_SESSION["usuario"]["nombre"] = $usuarionew->getNombre();
 
-            $_SESSION["sistemaGuardado"] = $_POST['sistemaguardar'];
+            $_SESSION["guardarEstado"] = $_POST['volcarSistema'];
         
             header("location:index.php");
             exit();
@@ -60,7 +60,7 @@ if ($_SERVER["REQUEST_METHOD"]== "POST" && isset($_POST["correo"])&& isset($_POS
         <form action="" method="post">
                 <input class="inpt" type="email" name="correo" id="correo" required placeholder="Correo de usuario">
                 <input class="inpt" type="password" name="password" id="password" required placeholder="Contraseña">
-                <select class="sistemaguardar" name="sistemaguardar" required>
+                <select class="volcarSistema" name="volcarSistema" required>
                     <option value="0">Sesiones</option>
                     <option value="1">MongoDB</option>
                     <option value="2">MySQL</option>

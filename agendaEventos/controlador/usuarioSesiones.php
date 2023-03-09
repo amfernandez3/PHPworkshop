@@ -1,5 +1,7 @@
 <?php
-require_once("interfazPersistencia.php");
+require_once("../modelo/persistenciaDatos/selectorPersistencia.php");
+require_once("../modelo/persistenciaDatos/interfazPersistencia.php");
+require_once("../modelo/conexionDB.php");
 if(session_status() !== PHP_SESSION_ACTIVE){
     session_start();
 }
@@ -8,10 +10,10 @@ class UsuarioSesiones implements interfazPersistencia{
 
     function guardar($datos){
         $usuarios =[];
-        if(isset($_SESSION['eventos'])){
-            $usuarios = unserialize($_SESSION['eventos']);
+        if(isset($_SESSION['usuarios'])){
+            $usuarios = unserialize($_SESSION['usuarios']);
         }
-
+        $datos->setId_usuario(count($usuarios));
         $usuarios[$datos->getId_usuario()] = $datos;
         $_SESSION['usuarios'] =  serialize($usuarios);
     }

@@ -1,6 +1,6 @@
 <?php
 
-interface PersistentInterface{
+interface interfazPersistencia{
     
 
     function guardar($datos);

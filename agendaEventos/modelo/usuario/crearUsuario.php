@@ -19,7 +19,7 @@ if($_SERVER["REQUEST_METHOD"]== "POST" && isset($_POST["correo"])&& isset($_POST
     $password = $_POST["password"];
     $rol = $_POST["rol"];
 
-    $_SESSION["sistemaGuardado"] = $_POST['sistemaguardar'];
+    $_SESSION["guardarEstado"] = $_POST['volcarSistema'];
 
     $usuario = new Usuario($nombre,$correo,$password);
     SelectorPersistente::getUsuarioPersistente()->guardar($usuario);
@@ -56,7 +56,7 @@ if($_SERVER["REQUEST_METHOD"]== "POST" && isset($_POST["correo"])&& isset($_POST
                 <input class="inpt" type="email" name="correo" id="correo" required placeholder="Correo de usuario">
                 <input class="inpt" type="password" name="password" id="password" required placeholder="Contraseña">
                 <input class="inpt" type="number" min="0" max="1" name="rol" id="rol" required>
-                <select class="sistemaguardar" name="sistemaguardar" required>
+                <select class="volcarSistema" name="volcarSistema" required>
                     <option value="0">Sesiones</option>
                     <option value="1">MySQL</option>
                     <option value="2">MongoDB</option>

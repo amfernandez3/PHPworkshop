@@ -1,5 +1,8 @@
 <?php
-require_once("interfazPersistencia.php");
+require_once("../modelo/persistenciaDatos/selectorPersistencia.php");
+require_once("../modelo/persistenciaDatos/interfazPersistencia.php");
+
+require_once("../modelo/conexionDB.php");
 if(session_status() !== PHP_SESSION_ACTIVE){
     session_start();
 }
@@ -14,7 +17,8 @@ class EventosSessiones implements interfazPersistencia{
        
         //var_dump($datos);
         //var_dump($eventos);
-        $eventos[$datos->getId_evento()] = $datos;
+        $datos->setId_evento(count($eventos));
+        $eventos[$datos->setId_evento()] = $datos;
         $_SESSION['eventos'] =  serialize($eventos);
     }
 

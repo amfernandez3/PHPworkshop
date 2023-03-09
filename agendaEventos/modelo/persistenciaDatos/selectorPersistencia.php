@@ -1,19 +1,29 @@
 <?php
-//require_once("EventosSesiones.php");
-//require_once("UsuarioSesiones.php");
+/**
+ * Realizamos los imports:
+ * 
+ */
+require_once("../controlador/eventoSesiones.php");
+require_once("../controlador/usuarioSesiones.php");
+require_once("../controlador/eventoMysql.php");
+require_once("../controlador/usuarioMysql.php");
+
+/**
+ * Creamos la clase selector de persistencias
+ */
 class SelectorPersistente{
     static private  function getTipoEvento() {
         if(session_status() !== PHP_SESSION_ACTIVE){
             session_start();
         }
-        return $_SESSION["sistemaGuardado"];
+        return $_SESSION["guardarEstado"];
     }
 
     static private  function getTipoUsuario() {
         if(session_status() !== PHP_SESSION_ACTIVE){
             session_start();
         }
-        return $_SESSION["sistemaGuardado"];
+        return $_SESSION["guardarEstado"];
     }
 
     static public function getEventoPersistente(){
