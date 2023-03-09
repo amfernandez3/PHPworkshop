@@ -1,55 +1,34 @@
 <?php
-/** Página de login del sistema
- *  Se ofrece la posibilidad de hacer login al usuario o de redirigir a la página de registro
- * 
- * Centrándonos en la funcionalidad de login: cargamos los modelos de usuario y de selectorPersistencia
- * 
- * 
- */
-
-require_once("../modelo/usuario/Usuario.php");
-require_once("../modelo/persistenciaDatos/SelectorPersistencia.php");
+require_once("./agendaEventos/modelo/usuario/usuario.php");
+require_once("./agendaEventos/modelo/persistenciaDatos/selectorPersistencia.php");
+require_once("./agendaEventos/modelo/conexionDB.php");
 $mensaje = "";
 if(session_status() !== PHP_SESSION_ACTIVE){
     session_start();
 }
-/*
-$usuarios = [];
-if(isset($_SESSION['usuarios'])){
-    $usuarios =  unserialize($_SESSION['usuarios']);
-}
 
-if($_SERVER["REQUEST_METHOD"]== "POST" && isset($_POST["correo"])&& isset($_POST["password"])&& isset($_POST["nombre"])&& isset($_POST["id"]) ) {
-    $id = $_POST["id"];
-    $nombre = $_POST["nombre"];
-    $correo = $_POST["correo"];
-    $password = $_POST["password"];
 
-    $usuario = new Usuario($id,$nombre,$correo,$password);
-            SelectorPersistente::getUsuarioPersistente()->guardar($usuario);
-    
-}
-*/
-if ($_SERVER["REQUEST_METHOD"]== "POST" && isset($_POST["correo"])&& isset($_POST["password"]) ) {
-    $correo = $_POST["correo"];
-    $passwd = $_POST["password"];
+    if ($_SERVER["REQUEST_METHOD"]== "POST" && isset($_POST["correo"])&& isset($_POST["password"]) ) {
 
-    $usuarionew = new Usuario(1,"Alejandro","alejandro@gmail.com","abc123.",1,false);
+        $correo = $_POST["correo"];
+        $passwd = $_POST["password"];
+        $_SESSION["sistemaGuardado"] = $_POST['sistemaguardar'];
 
-    if($usuarionew->getCorreo() == $correo && $usuarionew->getPassword() == $passwd){
-        $mensaje =  "usuario correcto";
-            $_SESSION["correo"] = $correo;
-            $_SESSION["usuario"]["idUsuario"] = $usuarionew->getId_usuario();
-            $_SESSION["usuario"]["nombre"] = $usuarionew->getNombre();
+        $usuarios = SelectorPersistente::getUsuarioPersistente()->listar();
+        //var_dump($usuarios);
+        foreach ($usuarios as $id => $usuario) {
 
-            $_SESSION["sistemaGuardado"] = $_POST['sistemaguardar'];
-        
-            header("location:../index.php");
-            exit();
-    } else {
-        $mensaje = "Usuario y/o contraseña incorrectos";
+            if($usuario->getCorreo() == $correo && $usuario->getPassword() == $passwd){
+                $_SESSION["correo"] = $correo;
+                $_SESSION["id"] = $usuario->getId_usuario();
+                header("location:index.php");
+                exit();
+            }else{
+                $mensaje = "Usuario no encontrado";
+            }
+        }  
     }
-}
+
 ?>
 
 
@@ -70,12 +49,12 @@ if ($_SERVER["REQUEST_METHOD"]== "POST" && isset($_POST["correo"])&& isset($_POS
                 <input class="inpt" type="password" name="password" id="password" required placeholder="Contraseña">
                 <select class="sistemaguardar" name="sistemaguardar" required>
                     <option value="0">Sesiones</option>
-                    <option value="1">MongoDB</option>
-                    <option value="2">MySQL</option>
+                    <option value="1">MySQL</option>
+                    <option value="2">MongoDB</option>
                 </select>
                 <input class="boton" type="submit" value="Entrar">    
         </form>
-        <a  href="registro.php">Registrarse</a></td>
+        <a  href="registro.php">Registrar usuario</a></td>
     </div>
    
 </body>

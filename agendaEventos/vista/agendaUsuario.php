@@ -26,10 +26,11 @@
     </form>
     </br>
     <!--Formulario que redirige al cierre de sesion-->
+    <p style="color:red">Control de cierre de sesión : pendiente*</p>
     <form action='../controlador/desconectar.php'>
     <input type="submit" name="desconectar" value="Desconectar"/>
     </form>
-
+    <p>ó</p>
     <a href="../controlador/desconectar.php">Desconectar (a)</a>
 </body>
 </html>
