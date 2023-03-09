@@ -1,36 +1,56 @@
 <?php
-/**
- * Esta página es el centro de la aplicación, una vez logueado (y con sesión activa), el usuario accede a su espacio
- * Aquí puede elegir con qué sistema de persistencia interactuar.
- */
+require_once("./agendaEventos/modelo/evento/evento.php");
+require_once("./agendaEventos/modelo/persistenciaDatos/selectorPersistencia.php");
+if(session_status() !== PHP_SESSION_ACTIVE){ 
+    session_start();  
+} 
 
+
+//var_dump($eventos);
 ?>
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agenda usuario</title>
+    <link rel="stylesheet" type="text/css" href="css.css" media="screen" />
+    <title>Document</title>
 </head>
 <body>
-    <p>Zona privada del usuario: <?php echo $_SESSION["correo"] ?></p>
-    <p>¿Qué datos quieres ver?</p>
-    <form action="" method="post">
-                <select class="sistemaguardar" name="sistemaguardar" required>
-                    <option value="0">Sesiones</option>
-                    <option value="1">MongoDB</option>
-                    <option value="2">MySQL</option>
-                </select>
-                <input class="boton" type="submit" value="Ver">    
-    </form>
-    </br>
-    <!--Formulario que redirige al cierre de sesion-->
-    <p style="color:red">Control de cierre de sesión : pendiente*</p>
-    <form action='../controlador/desconectar.php'>
-    <input type="submit" name="desconectar" value="Desconectar"/>
-    </form>
-    <p>ó</p>
-    <a href="../controlador/desconectar.php">Desconectar (a)</a>
+    
+    <select class="menus" onchange="location = this.value;">
+        <option>Eventos</option>
+        <option value="eventos.php">Crear Eventos</option>
+    </select>
+    <select class="menus" onchange="location = this.value;">
+        <option value="#">Opciones</option>
+        <option value="listarUsuarios.php">Listar Usuarios</option>
+        <option value="nuevoUsuario.php">Añadir Usuario</option>
+    </select>
+    
+    <table>
+        <tr>
+            <td>nombre</td>
+            <td>fecha_inicio</td>
+            <td>fecha_fin</td>
+        </tr>
+        <?php
+        echo($_SESSION["sistemaGuardado"]);
+                 $eventos = SelectorPersistente::getEventoPersistente()->listar();
+                 
+                 if($eventos!= null){
+                foreach ($eventos as $id => $evento) {
+        //for($i=0; $i< count($eventos); $i++){
+                 ?>
+        <tr>
+            <td><?= $evento->getNombre() ?></td>
+            <td><?= $evento->getFecha_inicio()->format("d-m-Y H:i ") ?></td>
+            <td><?= $evento->getFecha_fin()->format("d-m-Y H:i ") ?></td>
+            <td><a  href="modifEvento.php?id=<?= $evento->getId_evento() ?>">Modificar evento</a></td>
+            <td><a  href="eliminarEvento.php?id=<?= $evento->getId_evento() ?>" onclick="javascript:return confirm('Estás seguro de eliminar el evento?')">Eliminar evento</a></td>
+        </tr>
+        <?php }}?>
+    </table>
 </body>
 </html>
