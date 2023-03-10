@@ -1,7 +1,18 @@
 <?
+
+/**
+ * Iniciamos el control de sesiones:
+ */
+if(session_status() !== PHP_SESSION_ACTIVE){
+    session_start();
+}
+
 $correo;
-if(isset($_SESSION["correoUsuario"])){
-    $correo = $_SESSION["correoUsuario"];
+if(isset($_SESSION["usuarioLogueadoCorreo"])){
+    $correo = $_SESSION["usuarioLogueadoCorreo"];
+}
+else{
+    header("location:../vista/login.php");
 }
 ?>
 <!DOCTYPE html>
@@ -13,8 +24,8 @@ if(isset($_SESSION["correoUsuario"])){
     <title>Document</title>
 </head>
 <body>
-    <p>Zona privada del usuario : <?=$_SESSION["correoUsuario"] ?> </p>
-    <p>Sus datos son: <?php if(isset($_SESSION["usuarios"])){echo '<pre>';print_r( unserialize($_SESSION["usuarios"])); echo '</pre>';}?> </p>
+    <p>Logueado con la cuenta: <?=$_SESSION["usuarioLogueadoCorreo"] ?> </p>
+    <p>Usuarios registrados: <?php if(isset($_SESSION["usuarios"])){echo '<pre>';print_r( unserialize($_SESSION["usuarios"])); echo '</pre>';}?> </p>
     <button><a href="../controlador/cerrarSesion.php">Cerrar Sesión</a></button>
     <button><a href="registro.php">Registro</a></button>
 </body>

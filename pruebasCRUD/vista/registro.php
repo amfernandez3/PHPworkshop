@@ -17,13 +17,20 @@ if(session_status() !== PHP_SESSION_ACTIVE){
         $correo = $_POST["correo"];
         $passwd = $_POST["password"];
         $nombre = $_POST["nombre"];
-        
         $usuario = new usuarioSesiones(1, $nombre, $correo,"usuario",$passwd);
-        $usuario->guardarUsuario($usuario);
-        
-        $_SESSION["correoUsuario"] = $usuario->getCorreo();
 
-        header("location:../index.php");
+        //Comprobamos si el usuario  ya existe en la base de datos antes de añadirlo.
+        if($usuario->comprobarExisteUsuario($correo, $passwd)){
+            $mensaje = "El usuario ya existe en la BD";
+        }
+        else{
+            $mensaje = "El usuario se añadió a la base de datos";
+            $usuario->guardarUsuario($usuario);
+            $_SESSION["usuarioLogueadoCorreo"] = $usuario->getCorreo();
+            header("location:../index.php");
+        }
+        
+        
 
         /* foreach ($usuarios as $id => $usuario) {
 
@@ -40,9 +47,9 @@ if(session_status() !== PHP_SESSION_ACTIVE){
 
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
@@ -57,7 +64,7 @@ if(session_status() !== PHP_SESSION_ACTIVE){
                 <input class="input" type="text" name="nombre" id="nombre" required placeholder="Nombre">
                 <input class="input" type="email" name="correo" id="correo" required placeholder="Correo de usuario">
                 <input class="input" type="password" name="password" id="password" required placeholder="Contraseña">
-                <input class="boton" type="submit" value="Login">  
+                <input class="boton" type="submit" value="Registrar">  
         </form>
         <a  href="login.php">volver al login</a></td>
     </div>

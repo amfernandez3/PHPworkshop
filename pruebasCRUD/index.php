@@ -8,10 +8,10 @@
 if(!session_start()){
     session_start();
 }
-if (!isset($_SESSION["correoUsuario"])) {
-    header("location:./vista/login.php");
+if (!isset($_SESSION["usuarioLogueadoCorreo"])) {
+    header("location:vista/login.php");
     exit();
 } else {
-    include("./vista/privado.php");
+    header("location:vista/privado.php");
 }
 ?>

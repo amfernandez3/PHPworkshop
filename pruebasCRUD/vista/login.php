@@ -1,11 +1,15 @@
 <?php
+/**
+ * Creamos los imports
+ */
+require_once("../modelo/usuarioSesiones.php");
+require_once("../modelo/usuario.php");
+
 /*
 Contrastamos la información recibida por POST con la del modelo de persistencia seleccionado
 */
 $mensaje = "";
-$arrayUsuarios = array(
-     
-);
+$Usuarios;
 
 if(session_status() !== PHP_SESSION_ACTIVE){
     session_start();
@@ -16,26 +20,14 @@ if(session_status() !== PHP_SESSION_ACTIVE){
 
         $correo = $_POST["correo"];
         $passwd = $_POST["password"];
-        $_SESSION["correoUsuario"] = $_POST['correo'];
 
+
+        // todo: incluir despues de validacion : $_SESSION["correoUsuario"] = $_POST['correo'];
+        
         /**
          * Cotejamos los datos introducidos con los de la base.
          */
-        if($correo == "alejandro@gmail.com" && $passwd == "abc123."){
-            header("location:../index.php");
-        }
-
-        /* foreach ($usuarios as $id => $usuario) {
-
-            if($usuario->getCorreo() == $correo && $usuario->getPassword() == $passwd){
-                $_SESSION["correo"] = $correo;
-                $_SESSION["id"] = $usuario->getId_usuario();
-                header("location:index.php");
-                exit();
-            }else{
-                $mensaje = "Usuario no encontrado";
-            }
-        }  */ 
+        
     }
 
 ?>
@@ -56,8 +48,8 @@ if(session_status() !== PHP_SESSION_ACTIVE){
     <div class="contenedor">
         <h2>Inicio de sesión</h2>
         <form action="" method="post">
-                <input class="inpt" type="email" name="correo" id="correo" required placeholder="Correo de usuario">
-                <input class="inpt" type="password" name="password" id="password" required placeholder="Contraseña">
+                <input class="input" type="email" name="correo" id="correo" required placeholder="Correo de usuario">
+                <input class="input" type="password" name="password" id="password" required placeholder="Contraseña">
                 <input class="boton" type="submit" value="Login">  
         </form>
         <a  href="registro.php">Registrarse</a></td>

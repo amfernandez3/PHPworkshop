@@ -1,5 +1,5 @@
 <?php
-abstract class Usuario
+abstract class usuario
 {
     private $idUsuario = null;
     private $nombre = null;
@@ -20,11 +20,6 @@ abstract class Usuario
         }
       }
 
-
-    public function comprobarValidarUsuario($correo, $contraseña)
-    {
-        return  $correo == $this->correo && password_verify($contraseña, $this->password);
-    }
 
 
     /**
