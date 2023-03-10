@@ -1,35 +1,29 @@
 <?php
-abstract class Usuario
-{
-    private $idUsuario = null;
-    private $nombre = null;
-    private $correo = null;
-    private $rol = 0;
-    private $password = null;
-    private $encriptar = false;
-
-    public function __construct($idUsuario, $nombre, $correo, $rol, $password) {
-        $this->idUsuario = $idUsuario;
-        $this->nombre = $nombre;
-        $this->correo = $correo;
-        $this->rol = $rol;
-        if ($this->encriptar) {
-          $this->password = password_hash($password, PASSWORD_DEFAULT);
-        } else {
-          $this->password = $password;
-        }
-      }
+class Usuario {
 
 
-    public function comprobarValidarUsuario($correo, $contraseña)
+
+    public function __construct(
+        private $idUsuario=null,
+        private $nombre=null,
+        private $correo=null,
+        private $rol=0,
+        private $password=null,
+        $encriptar=false)
     {
-        return  $correo == $this->correo && password_verify($contraseña, $this->password);
+            if ($encriptar) {
+                $this->password = password_hash($password, PASSWORD_DEFAULT);
+            } 
     }
 
+    public function comprobarValidarUsuario($correo, $contraseña) {
+        return  $correo == $this->correo && password_verify($contraseña,$this->password);
+    }
+    
 
     /**
      * Get the value of idUsuario
-     */
+     */ 
     public function getIdUsuario()
     {
         return $this->idUsuario;
@@ -37,7 +31,7 @@ abstract class Usuario
 
     /**
      * Get the value of nombre
-     */
+     */ 
     public function getNombre()
     {
         return $this->nombre;
@@ -45,7 +39,7 @@ abstract class Usuario
 
     /**
      * Get the value of apellidos
-     */
+     */ 
     public function getApellidos()
     {
         return $this->apellidos;
@@ -53,14 +47,14 @@ abstract class Usuario
 
     /**
      * Get the value of correo
-     */
+     */ 
     public function getCorreo()
     {
         return $this->correo;
     }
     /**
      * Get the value of password
-     */
+     */ 
     public function getPassword()
     {
         return $this->password;
@@ -70,7 +64,7 @@ abstract class Usuario
      * Set the value of nombre
      *
      * @return  self
-     */
+     */ 
     public function setNombre($nombre)
     {
         $this->nombre = $nombre;
@@ -82,7 +76,7 @@ abstract class Usuario
      * Set the value of apellidos
      *
      * @return  self
-     */
+     */ 
     public function setApellidos($apellidos)
     {
         $this->apellidos = $apellidos;
@@ -94,7 +88,7 @@ abstract class Usuario
      * Set the value of correo
      *
      * @return  self
-     */
+     */ 
     public function setCorreo($correo)
     {
         $this->correo = $correo;
@@ -106,7 +100,7 @@ abstract class Usuario
      * Set the value of password
      *
      * @return  self
-     */
+     */ 
     public function setPassword($password)
     {
         $this->password = password_hash($password, PASSWORD_DEFAULT);
@@ -114,35 +108,35 @@ abstract class Usuario
         return $this;
     }
 
-    /**
-     * Get the value of rol
-     */
-    public function getRol()
-    {
-        return $this->rol;
-    }
+        /**
+         * Get the value of rol
+         */ 
+        public function getRol()
+        {
+                return $this->rol;
+        }
 
-    /**
-     * Set the value of rol
-     *
-     * @return  self
-     */
-    public function setRol($rol)
-    {
-        $this->rol = $rol;
+        /**
+         * Set the value of rol
+         *
+         * @return  self
+         */ 
+        public function setRol($rol)
+        {
+                $this->rol = $rol;
 
-        return $this;
-    }
+                return $this;
+        }
 
-    /**
-     * Set the value of idUsuario
-     *
-     * @return  self
-     */
-    public function setIdUsuario($idUsuario)
-    {
-        $this->idUsuario = $idUsuario;
+        /**
+         * Set the value of idUsuario
+         *
+         * @return  self
+         */ 
+        public function setIdUsuario($idUsuario)
+        {
+                $this->idUsuario = $idUsuario;
 
-        return $this;
-    }
+                return $this;
+        }
 }

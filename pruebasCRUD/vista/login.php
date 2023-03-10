@@ -3,6 +3,10 @@
 Contrastamos la información recibida por POST con la del modelo de persistencia seleccionado
 */
 $mensaje = "";
+$arrayUsuarios = array(
+     
+);
+
 if(session_status() !== PHP_SESSION_ACTIVE){
     session_start();
 }
@@ -56,7 +60,7 @@ if(session_status() !== PHP_SESSION_ACTIVE){
                 <input class="inpt" type="password" name="password" id="password" required placeholder="Contraseña">
                 <input class="boton" type="submit" value="Login">  
         </form>
-        <a  href="registroSesiones.php">Registrar en sesiones</a></td>
+        <a  href="registro.php">Registrarse</a></td>
     </div>
    
 </body>

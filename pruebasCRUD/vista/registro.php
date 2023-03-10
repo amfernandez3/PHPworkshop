@@ -1,5 +1,9 @@
 <?php
 /*
+Importamos las clases con las que trabajaremos
+*/
+require_once("../modelo/usuarioSesiones.php");
+/*
 Contrastamos la información recibida por POST con la del modelo de persistencia seleccionado
 */
 $mensaje = "";
@@ -8,11 +12,18 @@ if(session_status() !== PHP_SESSION_ACTIVE){
 }
 
 
-    if ($_SERVER["REQUEST_METHOD"]== "POST" && isset($_POST["correo"])&& isset($_POST["password"]) ) {
+    if ($_SERVER["REQUEST_METHOD"]== "POST" && isset($_POST["nombre"]) && isset($_POST["correo"])&& isset($_POST["password"]) ) {
 
         $correo = $_POST["correo"];
         $passwd = $_POST["password"];
-        $_SESSION["correoUsuario"] = $_POST['correo'];
+        $nombre = $_POST["nombre"];
+        
+        $usuario = new usuarioSesiones(1, $nombre, $correo,"usuario",$passwd);
+        $usuario->guardarUsuario($usuario);
+        
+        $_SESSION["correoUsuario"] = $usuario->getCorreo();
+
+        header("location:../index.php");
 
         /* foreach ($usuarios as $id => $usuario) {
 
@@ -41,10 +52,11 @@ if(session_status() !== PHP_SESSION_ACTIVE){
 <body>
 <div class="mensaje"><?=$mensaje?></div>
     <div class="contenedor">
-        <h2>Inicio de sesión</h2>
+        <h2>Crear nuevo usuario</h2>
         <form action="" method="post">
-                <input class="inpt" type="email" name="correo" id="correo" required placeholder="Correo de usuario">
-                <input class="inpt" type="password" name="password" id="password" required placeholder="Contraseña">
+                <input class="input" type="text" name="nombre" id="nombre" required placeholder="Nombre">
+                <input class="input" type="email" name="correo" id="correo" required placeholder="Correo de usuario">
+                <input class="input" type="password" name="password" id="password" required placeholder="Contraseña">
                 <input class="boton" type="submit" value="Login">  
         </form>
         <a  href="login.php">volver al login</a></td>
