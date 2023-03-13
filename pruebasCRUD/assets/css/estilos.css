@@ -1,8 +1,8 @@
 body * {
-    display: flex;
+   /*  display: flex;
     align-items: center;
     flex-direction: column;
-    justify-content: center;
+    justify-content: center; */
  }
 
  form{
@@ -12,4 +12,8 @@ body * {
 
  form > input {
     margin: 10px;
+ }
+
+ button{
+   margin: 10px;
  }

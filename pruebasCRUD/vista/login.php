@@ -21,12 +21,23 @@ if(session_status() !== PHP_SESSION_ACTIVE){
         $correo = $_POST["correo"];
         $passwd = $_POST["password"];
 
-
         // todo: incluir despues de validacion : $_SESSION["correoUsuario"] = $_POST['correo'];
         
         /**
          * Cotejamos los datos introducidos con los de la base.
          */
+        if(isset($_SESSION["usuarios"])){
+            if(usuarioSesiones::comprobarLogin($correo,$passwd)){
+                $_SESSION["usuarioLogueadoCorreo"] = $correo;
+                header("location:../index.php");
+            }
+            else{
+                $mensaje = "Los datos no son correctos.";
+            }
+        }
+        else{
+            $mensaje = "No existen usuarios, regístrate!";
+        }
         
     }
 

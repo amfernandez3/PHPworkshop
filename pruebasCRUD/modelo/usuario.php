@@ -8,11 +8,12 @@ abstract class usuario
     private $password = null;
     private $encriptar = false;
 
-    public function __construct($idUsuario, $nombre, $correo, $rol, $password) {
+    public function __construct($idUsuario, $nombre, $correo, $rol, $password, $encriptar) {
         $this->idUsuario = $idUsuario;
         $this->nombre = $nombre;
         $this->correo = $correo;
         $this->rol = $rol;
+        $this->encriptar = $encriptar;
         if ($this->encriptar) {
           $this->password = password_hash($password, PASSWORD_DEFAULT);
         } else {

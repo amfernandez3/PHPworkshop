@@ -5,8 +5,8 @@ class usuarioSesiones extends usuario {
 
     private static $usuarios = array();
 
-    public function __construct($idUsuario, $nombre, $correo, $rol, $password) {
-        parent::__construct($idUsuario, $nombre, $correo, $rol, $password);
+    public function __construct($idUsuario, $nombre, $correo, $rol, $password,$encriptar) {
+        parent::__construct($idUsuario, $nombre, $correo, $rol, $password,$encriptar);
       }
 
       /**
@@ -30,7 +30,23 @@ class usuarioSesiones extends usuario {
     * Si existe sesiones lo vuelca en $usuarios y lo recorre.
     * Si encuentra el usuario devuelve true.
     */ 
-     public static function comprobarExisteUsuario($correo, $contraseña){
+     public static function comprobarExisteUsuario($correo){
+      if(isset($_SESSION["usuarios"])){
+        self::recuperarUsuarios();
+        foreach (self::$usuarios as $usuario){
+          if($usuario->getCorreo() === $correo){
+            
+            return true;
+          }
+        }
+      }
+      else{
+        return false;
+      }
+    } 
+
+
+    public static function comprobarLogin($correo, $contraseña){
       if(isset($_SESSION["usuarios"])){
         self::recuperarUsuarios();
         foreach (self::$usuarios as $usuario){
@@ -56,6 +72,21 @@ class usuarioSesiones extends usuario {
         self::$usuarios = array();
     }
     }
+
+    public static function encontrarID($correo){
+      if(isset($_SESSION["usuarios"])){
+        self::recuperarUsuarios();
+        foreach (self::$usuarios as $usuario){
+          if($usuario->getCorreo() === $correo){
+            
+            return $usuario->getIdUsuario();
+          }
+        }
+      }
+      else{
+        return null;
+      }
+    } 
 
 }
 

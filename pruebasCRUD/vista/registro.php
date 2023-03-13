@@ -17,11 +17,21 @@ if(session_status() !== PHP_SESSION_ACTIVE){
         $correo = $_POST["correo"];
         $passwd = $_POST["password"];
         $nombre = $_POST["nombre"];
-        $usuario = new usuarioSesiones(1, $nombre, $correo,"usuario",$passwd);
+        /**
+         * Generamos el id dinámico en base al tamaño de la sesión
+         */
+        $id;
+        if(isset($_SESSION["usuarios"])){
+            $id = count(unserialize($_SESSION["usuarios"]));
+        }
+        else{
+            $id = 0;
+        }
+        $usuario = new usuarioSesiones($id, $nombre, $correo,"usuario",$passwd,false);
 
         //Comprobamos si el usuario  ya existe en la base de datos antes de añadirlo.
         if($usuario->comprobarExisteUsuario($correo, $passwd)){
-            $mensaje = "El usuario ya existe en la BD";
+            $mensaje = "El correo ya existe en la BD";
         }
         else{
             $mensaje = "El usuario se añadió a la base de datos";
@@ -30,19 +40,6 @@ if(session_status() !== PHP_SESSION_ACTIVE){
             header("location:../index.php");
         }
         
-        
-
-        /* foreach ($usuarios as $id => $usuario) {
-
-            if($usuario->getCorreo() == $correo && $usuario->getPassword() == $passwd){
-                $_SESSION["correo"] = $correo;
-                $_SESSION["id"] = $usuario->getId_usuario();
-                header("location:index.php");
-                exit();
-            }else{
-                $mensaje = "Usuario no encontrado";
-            }
-        }   */
     }
 
 ?>
