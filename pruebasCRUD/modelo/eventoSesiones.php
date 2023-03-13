@@ -11,16 +11,25 @@ class eventoSesiones extends evento {
     /** 
     * Comprobamos si existe la sesión, si es así recuperamos la info.// si no creamos el array.
     */
+    echo '<pre>';
+    print_r($evento);
+    echo '</pre>';
     self::recuperarEventos();
     array_push(self::$eventos,$evento);
     $_SESSION["eventos"] = serialize(self::$eventos);
   }
 
+  /**
+   * Función que recupera y devuelve la lista de eventos (objeto)
+   */
   public static function listarEventos(){
     self::recuperarEventos();
     return self::$eventos;
   }
 
+  /**
+   * 
+   */
   public static function recuperarEventos(){
     if (isset($_SESSION["eventos"])) {
       self::$eventos = unserialize($_SESSION["eventos"]);
@@ -37,6 +46,11 @@ class eventoSesiones extends evento {
       unset($_SESSION["eventos"]);
       self::$eventos = array();
   } 
+  }
+
+  function __toString()
+  {
+    return "Este evento es: " . $this->getNombre();
   }
 
 

@@ -17,31 +17,36 @@ include('../controlador/controlAcceso.php');
     $idEvento;
     $idUsuario;
 
-    /**
-     * Control de id de evento y usuario
-     */
-        if(isset($_SESSION["eventos"])){
-            $idEvento = count(unserialize($_SESSION["eventos"]));
-        }
-        else{
-            $idEvento = 0;
-        }
-
-        $idUsuario = usuarioSesiones::encontrarID($correo);
+   
 
     /**
      * Control de datos de formulario -> añadir evento
      */
     if ($_SERVER["REQUEST_METHOD"]== "POST" && isset($_POST["nombre"]) && isset($_POST["descripcion"])&& isset($_POST["fecha_ini"]) ){
+         /**
+     * Control de id de evento y usuario
+     */
+    if(isset($_SESSION["eventos"])){
+        $idEvento = count(unserialize($_SESSION["eventos"]));
+    }
+    else{
+        $idEvento = 0;
+    }
+
+    $idUsuario = usuarioSesiones::encontrarID($correo);
+
+
         $nombre = $_POST["nombre"];
         $descripcion = $_POST["descripcion"];
         $fechaInicio = $_POST["fecha_ini"];
         if(isset($_POST["fecha_fin"])){
             $fechaFin = $_POST["fecha_fin"];
         }
+        $mensaje = "añadido evento con nombre: " . $nombre;
         $evento = new eventoSesiones($idEvento,$idUsuario,$nombre,$descripcion,$fechaInicio,$fechaFin);
+        $mensaje = $evento->__toString() . $nombre. $idUsuario;
         eventoSesiones::guardarEvento($evento);
-        $eventos = eventoSesiones::listarEventos();
+        
     }
     /**
      * Gestión del borrado de los eventos : cuando se envía el boton de borrado
@@ -55,8 +60,9 @@ include('../controlador/controlAcceso.php');
      * Salida de error:
      */
     else{
-        $mensaje = "Los datos introducidos no son correctos.";
+        
     }
+    $eventos = eventoSesiones::listarEventos();
 
 ?>
 <!DOCTYPE html>
@@ -79,7 +85,8 @@ include('../controlador/controlAcceso.php');
     <button><a href="login.php">Login</a></button>
     <button><a href="registro.php">Registro</a></button>
     <article id="eventos">
-    <form action="" method="post">
+    <!-- Código que gestiona el envío de datos de evento -->
+    <form action="" method="post" id="crearEventoForm">
         <caption>Añadir evento: </caption>
                 <input class="input" type="text" name="nombre" id="nombre" required placeholder="Nombre del evento">
                 <input class="input" type="text" name="descripcion" id="descripcion" required placeholder="Descripcion">
@@ -96,35 +103,37 @@ include('../controlador/controlAcceso.php');
         <form action="" method="POST">
         <input class="boton" type="submit" value="Borrar Eventos" name="borrarEventos">
         </form>
+        <form action="" method="POST">
+        <input class="boton" type="submit" value="actualizar" name="actualizar">
+        </form>
     <p>Tabla de eventos</p>
     <div id="tabla eventos">
      <?= '<pre>'; if($eventos) print_r($eventos); echo '</pre>';?>
     </div>
     </article>
     <article id="tablaEventos">
-    <table>
-  <thead>
-    <tr>
-      <th>Nombre</th>
-      <th>Descripción</th>
-      <th>Fecha ini</th>
-      <!-- Agrega más columnas si es necesario -->
-    </tr>
-  </thead>
-  <tbody>
-    <?php
-    // Suponiendo que el array de objetos se llama $objetos
-    foreach ($eventos as $evento) {
-      echo '<tr>';
-      echo '<td>' . $evento->getNombre() . '</td>';
-      echo '<td>' . $evento->getDescripcion() . '</td>';
-      echo '<td>' . $evento->getFecha_inicio()->format("d-m-Y H:i ") . '</td>';
-      // Agrega más columnas si es necesario
-      echo '</tr>';
-    }
-    ?>
-  </tbody>
-</table>
+    <table class="table">
+        <tr>
+            <td>nombre</td>
+            <td>descripcion</td>
+            <td>fecha_inicio</td>
+            <td>fecha_fin</td>
+            <td>Modificar</td>
+            <td>Eliminar</td>
+        </tr>
+        <?php
+         foreach ($eventos as $evento) {
+                 ?>
+        <tr>
+            <td><?= $evento->getNombre() ?></td>
+            <td><?= $evento->getDescripcion() ?></td>
+            <td><?= $evento->getFecha_inicio()->format("d-m-Y H:i ") ?></td>
+            <td><?= $evento->getFecha_fin()->format("d-m-Y H:i ") ?></td>
+            <td><a  href="modifEvento.php?id=<?= $evento->getId_evento() ?>">Modificar evento</a></td>
+            <td><a  href="eliminar.php?id=<?= $evento->getId_evento() ?>" onclick="javascript:return confirm('Estás seguro de eliminar el evento?')">Eliminar evento</a></td>
+        </tr>
+        <?php }?>
+    </table>
     </article>
     </section>
 </body>

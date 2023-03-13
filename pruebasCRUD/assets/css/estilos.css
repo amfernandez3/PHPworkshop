@@ -1,9 +1,31 @@
 body * {
-   /*  display: flex;
+    display: flex;
     align-items: center;
     flex-direction: column;
-    justify-content: center; */
+    justify-content: center; 
  }
+
+section{
+   background-color: rgb(241, 225, 189);
+}
+article{
+   border: 1px solid black;
+   display: flex;
+   flex-direction: row;
+}
+
+.tablaEventos{
+   border: 1px solid red;
+}
+.crearEventoForm{
+   border: 1px solid orange;
+   color: blue;
+}
+tr{
+   border: 1px solid blue;
+   display: flex;
+   flex-direction: row;
+}
 
  form{
     margin: 10px;
