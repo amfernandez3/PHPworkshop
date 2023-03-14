@@ -3,17 +3,15 @@ require_once("evento.php");
 class eventoSesiones extends evento {
     private static $eventos = array();
 
-  public function __construct($id_evento=null,$id_usuario=null,$nombre=null,$descripcion=null,$fecha_inicio=null,$fecha_fin=null) {
-    parent::__construct($id_evento=null,$id_usuario=null,$nombre=null,$descripcion=null,$fecha_inicio=null,$fecha_fin=null);
+  public function __construct($id_evento,$id_usuario,$nombre,$descripcion,$fecha_inicio,$fecha_fin=null) {
+    parent::__construct($id_evento,$id_usuario,$nombre,$descripcion,$fecha_inicio,$fecha_fin=null);
   }
 
   public static function guardarEvento($evento){
     /** 
     * Comprobamos si existe la sesión, si es así recuperamos la info.// si no creamos el array.
     */
-    echo '<pre>';
-    print_r($evento);
-    echo '</pre>';
+    
     self::recuperarEventos();
     array_push(self::$eventos,$evento);
     $_SESSION["eventos"] = serialize(self::$eventos);
@@ -28,7 +26,7 @@ class eventoSesiones extends evento {
   }
 
   /**
-   * 
+   * La función recuperar eventos vuelca en $eventos, la lista de la sesion, si no la crea vacía.
    */
   public static function recuperarEventos(){
     if (isset($_SESSION["eventos"])) {
@@ -50,7 +48,7 @@ class eventoSesiones extends evento {
 
   function __toString()
   {
-    return "Este evento es: " . $this->getNombre();
+    return "Este evento es: " . $this->getNombre() . "y consiste en: " .$this->getDescripcion();
   }
 
 

@@ -1,13 +1,20 @@
-body * {
+body{
     display: flex;
     align-items: center;
     flex-direction: column;
-    justify-content: center; 
+    justify-content: center;
+    background-color: rgb(241, 225, 189);
+ }
+ section{
+   display: flex;
+   flex-direction: row;
+   align-items:normal;
+   flex-direction: column;
+   justify-content:left;
+   background-color: rgb(241, 225, 189);
+
  }
 
-section{
-   background-color: rgb(241, 225, 189);
-}
 article{
    border: 1px solid black;
    display: flex;
@@ -20,6 +27,7 @@ article{
 .crearEventoForm{
    border: 1px solid orange;
    color: blue;
+   
 }
 tr{
    border: 1px solid blue;

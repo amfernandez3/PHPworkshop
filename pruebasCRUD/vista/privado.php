@@ -35,18 +35,15 @@ include('../controlador/controlAcceso.php');
 
     $idUsuario = usuarioSesiones::encontrarID($correo);
 
-
         $nombre = $_POST["nombre"];
         $descripcion = $_POST["descripcion"];
-        $fechaInicio = $_POST["fecha_ini"];
+        $fechaInicio = date('Y/d/m H:i',strtotime($_POST['fecha_ini']));
         if(isset($_POST["fecha_fin"])){
-            $fechaFin = $_POST["fecha_fin"];
+            $fechaFin = date('Y/d/m H:i',strtotime($_POST['fecha_fin']));
         }
-        $mensaje = "añadido evento con nombre: " . $nombre;
         $evento = new eventoSesiones($idEvento,$idUsuario,$nombre,$descripcion,$fechaInicio,$fechaFin);
-        $mensaje = $evento->__toString() . $nombre. $idUsuario;
         eventoSesiones::guardarEvento($evento);
-        
+        $mensaje = "El evento se creó con éxito.";
     }
     /**
      * Gestión del borrado de los eventos : cuando se envía el boton de borrado
@@ -78,7 +75,7 @@ include('../controlador/controlAcceso.php');
 <body>
     <section>
     <?php include('../controlador/controlAcceso.php'); ?>
-    <p><?=$mensaje ?> </p>
+    <!-- <p><?=$mensaje ?> </p> -->
     <p>Logueado con la cuenta: <?=$correo ?> </p>
     <!-- <p>Usuarios registrados: <?= '<pre>'; print_r(unserialize($_SESSION["usuarios"])); echo '</pre>';?> </p> -->
     <button><a href="../controlador/cerrarSesion.php">Cerrar Sesión</a></button>
@@ -98,18 +95,11 @@ include('../controlador/controlAcceso.php');
                     <option value="2">MongoDB</option>
                 </select> -->
                 <input class="boton" type="submit" value="Crear">
-                    
         </form>
         <form action="" method="POST">
         <input class="boton" type="submit" value="Borrar Eventos" name="borrarEventos">
+                <input class="boton" type="submit" value="actualizar" name="actualizar">
         </form>
-        <form action="" method="POST">
-        <input class="boton" type="submit" value="actualizar" name="actualizar">
-        </form>
-    <p>Tabla de eventos</p>
-    <div id="tabla eventos">
-     <?= '<pre>'; if($eventos) print_r($eventos); echo '</pre>';?>
-    </div>
     </article>
     <article id="tablaEventos">
     <table class="table">
@@ -127,8 +117,8 @@ include('../controlador/controlAcceso.php');
         <tr>
             <td><?= $evento->getNombre() ?></td>
             <td><?= $evento->getDescripcion() ?></td>
-            <td><?= $evento->getFecha_inicio()->format("d-m-Y H:i ") ?></td>
-            <td><?= $evento->getFecha_fin()->format("d-m-Y H:i ") ?></td>
+            <td><?= $evento->getFecha_inicio() ?></td>
+            <td><?= $evento->getFecha_fin() ?></td>
             <td><a  href="modifEvento.php?id=<?= $evento->getId_evento() ?>">Modificar evento</a></td>
             <td><a  href="eliminar.php?id=<?= $evento->getId_evento() ?>" onclick="javascript:return confirm('Estás seguro de eliminar el evento?')">Eliminar evento</a></td>
         </tr>

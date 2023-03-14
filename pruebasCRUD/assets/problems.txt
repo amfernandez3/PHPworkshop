@@ -1,0 +1,5 @@
+la instanciación de la clase eventoSesiones no almacena los valores de los parámetros.
+
+Comprobaciones: recogida en formulario  > instancia clase (params) > volcado del objeto en la sesión V > recuperación del objeto V
+
+Los datos se recogen bien en el formulario?

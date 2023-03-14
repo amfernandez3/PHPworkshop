@@ -1,16 +1,16 @@
 <?php
 abstract class Evento {
-                    private $id_evento=null;
-                    private $id_usuario=null;
-                    private $nombre=null;
-                    private $descripcion=null;
-                    private ?DateTime $fecha_inicio=null;
-                    private ?DateTime $fecha_fin=null;
+                    private $id_evento;
+                    private $id_usuario;
+                    private $nombre;
+                    private $descripcion;
+                    private $fecha_inicio=null;
+                    private $fecha_fin=null;
 
     /**
      * Constructor de la clase abstracta "evento"
      */
-    public function __construct($id_evento=null,$id_usuario=null,$nombre=null,$descripcion=null,$fecha_inicio=null,$fecha_fin=null){
+    public function __construct($id_evento,$id_usuario,$nombre,$descripcion,$fecha_inicio,$fecha_fin){
         $this->id_evento = $id_evento;
         $this->id_usuario = $id_usuario;
         $this->nombre = $nombre;
@@ -25,8 +25,8 @@ abstract class Evento {
             $this->fecha_inicio = new DateTime();   
         }
         if ($this->fecha_fin == null) {
-            $this->fecha_fin = clone $this->fecha_inicio;
-            $this->fecha_fin->modify('+ 1 hour');
+            $this->fecha_fin = $this->fecha_inicio;
+           // $this->fecha_fin->modify('+ 1 hour');
         }        
     }
 
