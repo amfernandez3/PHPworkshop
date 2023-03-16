@@ -8,10 +8,16 @@ if(session_status() !== PHP_SESSION_ACTIVE){
 
 $id = $_GET['id'];
 
-$eventos = SelectorPersistente::getEventoPersistente()->listar();
+$eventos = unserialize($_SESSION["eventos"]);
+
+/**
+ * Método que recorre el array de eventos, buscando por id_evento y elimina
+ */
 foreach ($eventos as $key => $evento){
     if($evento->getId_evento() == $id){
-        SelectorPersistente::getEventoPersistente()->eliminar($id);
+        
+        $evento->eliminar($id);
     }
 }
+
 include("../../vista/privado.php");

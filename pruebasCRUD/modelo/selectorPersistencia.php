@@ -40,10 +40,11 @@ class SelectorPersistente{
             }
         }
 
-    static public function getEventoPersistente($id_evento, $id_usuario,$nombre,$descripción,$fechaInicio,$fechaFin){
+    static public function getEventoPersistente(){
+    
         switch(self::persistenciaSeleccionada()){
             case 0: 
-                $evento =  new eventoSesiones($id_evento, $id_usuario,$nombre,$descripción,$fechaInicio,$fechaFin);
+                $evento = eventoSesiones::class;
                 break;
             
             case 1:
@@ -55,7 +56,7 @@ class SelectorPersistente{
                 break;
 
             default: 
-            $evento =  new EventosSessiones();
+              $evento =  eventoSesiones::class;
             break;
         }
         //Devolvemos el evento creado a cuyos métodos se pueden realizar llamadas.

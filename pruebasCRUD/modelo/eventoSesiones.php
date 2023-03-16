@@ -8,12 +8,19 @@ class eventoSesiones extends evento implements interfazPersistencia{
     parent::__construct($id_evento,$id_usuario,$nombre,$descripcion,$fecha_inicio,$fecha_fin=null);
   }
 
-  function guardar($evento){
+  function guardar(){
     /** 
     * Comprobamos si existe la sesión, si es así recuperamos la info.// si no creamos el array.
     */
     
     self::listar();
+    if(!empty(self::$eventos)){
+      $this->setId_evento(intval(max(array_keys(self::$eventos)))+1);
+    }
+    else{
+      $this->setId_evento(0);
+    }
+    
     array_push(self::$eventos,$this);
     $_SESSION["eventos"] = serialize(self::$eventos);
   }
@@ -26,7 +33,7 @@ class eventoSesiones extends evento implements interfazPersistencia{
   /**
    * La función recuperar eventos vuelca en $eventos, la lista de la sesion, si no la crea vacía.
    */
-  function listar(){
+   static function listar(){
     if (isset($_SESSION["eventos"])) {
       self::$eventos = unserialize($_SESSION["eventos"]);
   } else {
@@ -47,11 +54,11 @@ class eventoSesiones extends evento implements interfazPersistencia{
   /**
    * Elimina un evento
    */
- function eliminar($id_evento){
+ static function eliminar($id_evento){
     if (isset($_SESSION["eventos"])) {
       $eventos = unserialize($_SESSION["eventos"]);
       foreach ($eventos as $indice => $evento) {
-        if ($evento["id_evento"] == $id_evento) {
+        if ($evento->getId_evento() == $id_evento) {
           unset($eventos[$indice]);
           break;
         }
@@ -62,9 +69,10 @@ class eventoSesiones extends evento implements interfazPersistencia{
        *
        */
     $_SESSION["eventos"] = serialize($eventos);
-    header("Location: ../privado.php");
+    header("Location: ../../vista/privado.php");
     }
     else{
+      unset($_SESSION["eventos"]);
       self::$eventos = array();
     } 
   }
@@ -77,6 +85,15 @@ class eventoSesiones extends evento implements interfazPersistencia{
   }
 
 
+
+
+    /**
+     * Get the value of eventos
+     */ 
+    public function getEventos()
+    {
+        return $this->eventos;
+    }
 
 }
 

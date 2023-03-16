@@ -5,19 +5,19 @@ if(session_status() !== PHP_SESSION_ACTIVE){
     session_start();
 }
 
-class EventosMysql implements interfazPersistencia{
+class EventosMysql extends Evento implements interfazPersistencia{
 
-   function guardar($datos){
+   function guardar(){
         $stm = BDMySql::getConexion()->prepare("INSERT into eventos (nombre, fecha_inicio, fecha_fin, id_usuario) values(:nombre,:fecha_inicio,:fecha_fin,:id_usuario)"); 
-                $stm->execute([":nombre"=>$datos->getNombre(),":fecha_inicio"=>$datos->getFecha_inicio()->format('Y-m-d H:i:s'),":fecha_fin"=>$datos->getFecha_fin()->format('Y-m-d H:i:s'),":id_usuario"=>$datos->getId_usuario()]);
+                $stm->execute([":nombre"=>$this->getNombre(),":fecha_inicio"=>$this->getFecha_inicio()->format('Y-m-d H:i:s'),":fecha_fin"=>$this->getFecha_fin()->format('Y-m-d H:i:s'),":id_usuario"=>$this->getId_usuario()]);
     }
 
-    function listar(){
+    static function listar(){
         $stm = BDMySql::getConexion()->prepare("SELECT * from eventos"); 
         $stm->execute();
         $eventos = [];
         while (($evento = $stm->fetch())!=null) {
-            $eventos[] =  new Evento($evento["nombre"],new DateTime($evento["fecha_inicio"]),new DateTime($evento["fecha_fin"]),$evento["id_usuario"],$evento["id_evento"]);
+            $eventos[] =  new self($evento["nombre"],new DateTime($evento["fecha_inicio"]),new DateTime($evento["fecha_fin"]),$evento["id_usuario"],$evento["id_evento"]);
         }
         return $eventos;
     }
@@ -27,7 +27,7 @@ class EventosMysql implements interfazPersistencia{
         $stm->execute([":nombre"=>$datos->getNombre(),":fecha_inicio"=>$datos->getFecha_inicio()->format('Y-m-d H:i:s'),":fecha_fin"=>$datos->getFecha_fin()->format('Y-m-d H:i:s'),":id"=>$datos->getId_evento()]);
     }
 
-    function eliminar($id){
+    static function eliminar($id){
         $stm = BDMySql::getConexion()->prepare("DELETE from eventos where id_evento = :id ");
         $stm->execute([":id"=>$id]);
     }

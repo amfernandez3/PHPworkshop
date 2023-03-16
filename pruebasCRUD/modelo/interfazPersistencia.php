@@ -6,12 +6,12 @@
 interface interfazPersistencia{
     
 
-     function guardar($datos);
+     function guardar();
 
-     function listar();
+    static function listar();
 
      function modificar($datos);
 
-     function eliminar($id);
+     static function eliminar($id);
 
 }

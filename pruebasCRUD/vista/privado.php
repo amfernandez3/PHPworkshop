@@ -26,18 +26,7 @@ include('../controlador/controlAcceso.php');
      * Control de datos de formulario -> añadir evento
      */
     if ($_SERVER["REQUEST_METHOD"]== "POST" && isset($_POST["nombre"]) && isset($_POST["descripcion"])&& isset($_POST["fecha_ini"]) ){
-         /**
-     * Control de id de evento y usuario
-     */
-    if(isset($_SESSION["eventos"])){
-        $idEvento = count(unserialize($_SESSION["eventos"]));
-    }
-    else{
-        $idEvento = 0;
-    }
-    
-
-    $idUsuario = usuarioSesiones::encontrarID($correo);
+        $idUsuario = usuarioSesiones::encontrarID($correo);
 
         $nombre = $_POST["nombre"];
         $descripcion = $_POST["descripcion"];
@@ -47,10 +36,11 @@ include('../controlador/controlAcceso.php');
         }
 
         //$evento = new eventoSesiones($idEvento,$idUsuario,$nombre,$descripcion,$fechaInicio,$fechaFin);
-        SelectorPersistente::getEventoPersistente($idEvento,$idUsuario,$nombre,$descripcion,$fechaInicio,$fechaFin)->guardar($idEvento);
-        //eventoSesiones::guardar($evento);
-        $selector = SelectorPersistente::tipoPersistencia();
-        $mensaje = "Logueado con la cuenta:" . $correo . " en persistencia: ". $selector;
+        $classEvento = SelectorPersistente::getEventoPersistente();
+        $evento = new $classEvento(null,$idUsuario,$nombre,$descripcion,$fechaInicio,$fechaFin);
+        $evento->guardar();
+    
+        $mensaje = "Logueado con la cuenta:" . $correo . " en persistencia: ". $classEvento;
     }
     /**
      * Gestión del borrado de los eventos : cuando se envía el boton de borrado
@@ -88,17 +78,16 @@ include('../controlador/controlAcceso.php');
     <button class="btn btn-light"><a href="../controlador/cerrarSesion.php">Cerrar Sesión</a></button>
     <button class="btn btn-light"><a href="login.php">Login</a></button>
     <button class="btn btn-light"><a href="registro.php">Registro</a></button>
-    <h2> ------------------ AGENDA EVENTOS---------------------</h2>
+    <h2> AGENDA EVENTOS---------------------</h2>
     </header>
     <section>
     <article id="eventos">
     <!-- Código que gestiona el envío de datos de evento -->
     <form action="" method="post" id="crearEventoForm">
-        <caption>Añadir evento: </caption>
                 <label for="nombre" class="help-block">Nombre del evento: </label>
                 <input class="input form-control" type="text" name="nombre" id="nombre" required placeholder="Nombre del evento">
                 <label for="descripcion" class="help-block">Descripción: </label>
-                <input class="input form-control" type="text" name="descripcion" id="descripcion" required placeholder="Descripcion">
+                <input class="input form-control" type="textarea" name="descripcion" id="descripcion" required placeholder="Descripcion">
                 <label for="fecha_ini" class="help-block">Fecha inicio evento: </label>
                 <input class="input form-control" type="datetime-local" name="fecha_ini" id="fecha_ini" required placeholder="Fecha Inicio">
                 <label for="fecha_fin" class="help-block">Fecha fin evento: </label>
