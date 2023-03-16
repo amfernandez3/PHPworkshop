@@ -15,14 +15,15 @@ class usuarioSesiones extends usuario {
        * Serializamos de nuevo y devolvemos a la sesión el array actualizado.
        */
 
-    public static function guardarUsuario($usuario){
+    public static function guardarUsuario($usuarioNuevoRegistro){
       /** 
       * Comprobamos si existe la sesión, si es así recuperamos la info.// si no creamos el array.
       */
       self::recuperarUsuarios();
-      array_push(self::$usuarios,$usuario);
+      array_push(self::$usuarios,$usuarioNuevoRegistro);
       $_SESSION["usuarios"] = serialize(self::$usuarios);
     }
+   
 
 
     /**
@@ -33,8 +34,8 @@ class usuarioSesiones extends usuario {
      public static function comprobarExisteUsuario($correo){
       if(isset($_SESSION["usuarios"])){
         self::recuperarUsuarios();
-        foreach (self::$usuarios as $usuario){
-          if($usuario->getCorreo() === $correo){
+        foreach (self::$usuarios as $usuarioInstancia){
+          if($usuarioInstancia->getCorreo() === $correo){
             
             return true;
           }
@@ -49,8 +50,8 @@ class usuarioSesiones extends usuario {
     public static function comprobarLogin($correo, $contraseña){
       if(isset($_SESSION["usuarios"])){
         self::recuperarUsuarios();
-        foreach (self::$usuarios as $usuario){
-          if($usuario->getCorreo() === $correo && $usuario->getPassword() === $contraseña){
+        foreach (self::$usuarios as $usuarioInstancia){
+          if($usuarioInstancia->getCorreo() === $correo && $usuarioInstancia->getPassword() === $contraseña){
             
             return true;
           }

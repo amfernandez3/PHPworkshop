@@ -2,8 +2,8 @@
 /**
  * Creamos los imports
  */
-require_once("../modelo/usuarioSesiones.php");
-require_once("../modelo/usuario.php");
+require_once("../modelo/usuario/usuarioSesiones.php");
+require_once("../modelo/usuario/usuario.php");
 
 /*
 Contrastamos la información recibida por POST con la del modelo de persistencia seleccionado
@@ -58,10 +58,18 @@ if(session_status() !== PHP_SESSION_ACTIVE){
     <div class="mensaje"><?=$mensaje?></div>
     <div class="contenedor">
         <h2>Inicio de sesión</h2>
-        <form action="" method="post">
-                <input class="input" type="email" name="correo" id="correo" required placeholder="Correo de usuario">
-                <input class="input" type="password" name="password" id="password" required placeholder="Contraseña">
-                <input class="boton" type="submit" value="Login">  
+        <form action="" method="post" class="form-group">
+                <label for="correo" class="help-block">Correo: </label>
+                <input class="input form-control" type="email" name="correo" id="correo" required placeholder="Correo de usuario">
+                <label for="password" class="help-block">Contraseña: </label>
+                <input class="input form-control" type="password" name="password" id="password" required placeholder="Contraseña">
+                <label for="selectorPersistencia" class="help-block">Selecciona la DB: </label>
+                <select class="selectorPersistencia form-control" name="selectorPersistencia" required>
+                <option value="0">Sesiones</option>
+                <option value="1">MySQL</option>
+                <option value="2">MongoDB</option>
+            </select>
+                <input class="btn btn-success" type="submit" value="Login">  
         </form>
         <a  href="registro.php">Registrarse</a></td>
     </div>

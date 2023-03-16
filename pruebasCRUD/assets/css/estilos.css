@@ -5,6 +5,17 @@ body{
     justify-content: center;
     background-color: rgb(241, 225, 189);
  }
+ header{
+   display: flex;
+    align-items:end ;
+    flex-direction: row;
+    background-color: rgb(237, 215, 165);
+    width: 100%;
+ }
+ header > button{
+   float: right;
+ }
+
  section{
    display: flex;
    flex-direction: row;
@@ -15,8 +26,9 @@ body{
 
  }
 
+
+
 article{
-   border: 1px solid black;
    display: flex;
    flex-direction: row;
 }
@@ -26,11 +38,9 @@ article{
 }
 .crearEventoForm{
    border: 1px solid orange;
-   color: blue;
    
 }
 tr{
-   border: 1px solid blue;
    display: flex;
    flex-direction: row;
 }

@@ -4,15 +4,18 @@
  */
 require_once("../modelo/eventoSesiones.php");
 require_once("../modelo/evento.php");
-require_once("../modelo/usuarioSesiones.php");
-require_once("../modelo/usuario.php");
+require_once("../modelo/usuario/usuarioSesiones.php");
+require_once("../modelo/usuario/usuario.php");
+require_once("../modelo/SelectorPersistencia.php");
 include('../controlador/controlAcceso.php');
+
 
 /**
  * Declaración de variables
  */
     $mensaje = "";
     $correo = $_SESSION["usuarioLogueadoCorreo"];
+    $selector = "";
     $eventos = array();
     $idEvento;
     $idUsuario;
@@ -32,6 +35,7 @@ include('../controlador/controlAcceso.php');
     else{
         $idEvento = 0;
     }
+    
 
     $idUsuario = usuarioSesiones::encontrarID($correo);
 
@@ -41,9 +45,12 @@ include('../controlador/controlAcceso.php');
         if(isset($_POST["fecha_fin"])){
             $fechaFin = date('Y/d/m H:i',strtotime($_POST['fecha_fin']));
         }
-        $evento = new eventoSesiones($idEvento,$idUsuario,$nombre,$descripcion,$fechaInicio,$fechaFin);
-        eventoSesiones::guardarEvento($evento);
-        $mensaje = "El evento se creó con éxito.";
+
+        //$evento = new eventoSesiones($idEvento,$idUsuario,$nombre,$descripcion,$fechaInicio,$fechaFin);
+        SelectorPersistente::getEventoPersistente($idEvento,$idUsuario,$nombre,$descripcion,$fechaInicio,$fechaFin)->guardar($idEvento);
+        //eventoSesiones::guardar($evento);
+        $selector = SelectorPersistente::tipoPersistencia();
+        $mensaje = "Logueado con la cuenta:" . $correo . " en persistencia: ". $selector;
     }
     /**
      * Gestión del borrado de los eventos : cuando se envía el boton de borrado
@@ -57,9 +64,11 @@ include('../controlador/controlAcceso.php');
      * Salida de error:
      */
     else{
-        
+}
+    if(isset($_SESSION["eventos"])){
+        $eventos = unserialize($_SESSION["eventos"]);
     }
-    $eventos = eventoSesiones::listarEventos();
+    
 
 ?>
 <!DOCTYPE html>
@@ -70,57 +79,59 @@ include('../controlador/controlAcceso.php');
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../assets/css/estilos.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <link rel="stylesheet" href="../assets/css/estilos.css">
     <title>Zona personal</title>
 </head>
 <body>
+    <header>
+    <p><?php echo $mensaje ?></p>
+    <button class="btn btn-light"><a href="../controlador/cerrarSesion.php">Cerrar Sesión</a></button>
+    <button class="btn btn-light"><a href="login.php">Login</a></button>
+    <button class="btn btn-light"><a href="registro.php">Registro</a></button>
+    <h2> ------------------ AGENDA EVENTOS---------------------</h2>
+    </header>
     <section>
-    <?php include('../controlador/controlAcceso.php'); ?>
-    <!-- <p><?=$mensaje ?> </p> -->
-    <p>Logueado con la cuenta: <?=$correo ?> </p>
-    <!-- <p>Usuarios registrados: <?= '<pre>'; print_r(unserialize($_SESSION["usuarios"])); echo '</pre>';?> </p> -->
-    <button><a href="../controlador/cerrarSesion.php">Cerrar Sesión</a></button>
-    <button><a href="login.php">Login</a></button>
-    <button><a href="registro.php">Registro</a></button>
     <article id="eventos">
     <!-- Código que gestiona el envío de datos de evento -->
     <form action="" method="post" id="crearEventoForm">
         <caption>Añadir evento: </caption>
-                <input class="input" type="text" name="nombre" id="nombre" required placeholder="Nombre del evento">
-                <input class="input" type="text" name="descripcion" id="descripcion" required placeholder="Descripcion">
-                <input class="input" type="datetime-local" name="fecha_ini" id="fecha_ini" required placeholder="Fecha Inicio">
-                <input class="input" type="datetime-local" name="fecha_fin" id="fecha_fin" placeholder="Fecha Fin">
-                <!-- <select class="sistemaguardar" name="sistemaguardar" required>
-                    <option value="0">Sesiones</option>
-                    <option value="1">MySQL</option>
-                    <option value="2">MongoDB</option>
-                </select> -->
-                <input class="boton" type="submit" value="Crear">
+                <label for="nombre" class="help-block">Nombre del evento: </label>
+                <input class="input form-control" type="text" name="nombre" id="nombre" required placeholder="Nombre del evento">
+                <label for="descripcion" class="help-block">Descripción: </label>
+                <input class="input form-control" type="text" name="descripcion" id="descripcion" required placeholder="Descripcion">
+                <label for="fecha_ini" class="help-block">Fecha inicio evento: </label>
+                <input class="input form-control" type="datetime-local" name="fecha_ini" id="fecha_ini" required placeholder="Fecha Inicio">
+                <label for="fecha_fin" class="help-block">Fecha fin evento: </label>
+                <input class="input form-control" type="datetime-local" name="fecha_fin" id="fecha_fin" placeholder="Fecha Fin">
+                <input class="boton btn btn-success" type="submit" value="Crear">
         </form>
         <form action="" method="POST">
-        <input class="boton" type="submit" value="Borrar Eventos" name="borrarEventos">
-                <input class="boton" type="submit" value="actualizar" name="actualizar">
+                <input class="boton btn btn-danger" type="submit" value="Borrar Eventos" name="borrarEventos">
+                <input class="boton btn btn-warning" type="submit" value="actualizar" name="actualizar">
         </form>
     </article>
     <article id="tablaEventos">
-    <table class="table">
+    <table class='table table-bordered table-striped'>
         <tr>
-            <td>nombre</td>
-            <td>descripcion</td>
-            <td>fecha_inicio</td>
-            <td>fecha_fin</td>
-            <td>Modificar</td>
-            <td>Eliminar</td>
+            <th>Id_evento</th>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Fecha_inicio</th>
+            <th>Fecha_fin</th>
+            <th>Modificar</th>
+            <th>Eliminar</th>
         </tr>
         <?php
-         foreach ($eventos as $evento) {
+            foreach ($eventos as $id => $evento) {
                  ?>
         <tr>
+            <td><?= $evento->getId_evento() ?></td>
             <td><?= $evento->getNombre() ?></td>
             <td><?= $evento->getDescripcion() ?></td>
             <td><?= $evento->getFecha_inicio() ?></td>
             <td><?= $evento->getFecha_fin() ?></td>
-            <td><a  href="modifEvento.php?id=<?= $evento->getId_evento() ?>">Modificar evento</a></td>
-            <td><a  href="eliminar.php?id=<?= $evento->getId_evento() ?>" onclick="javascript:return confirm('Estás seguro de eliminar el evento?')">Eliminar evento</a></td>
+            <td><a  href="modificarEvento.php?id=<?= $evento->getId_evento() ?>"><img src="../assets/icons/edit.png" alt="edit" width="20px" height="20px"></a></td>
+            <td><a  href="../modelo/funcionesCRUD/eliminarEvento.php?id=<?= $evento->getId_evento() ?>" onclick="javascript:return confirm('Estás seguro de eliminar el evento?')"><img src="../assets/icons/delete.png" alt="delete" width="20px" height="20px"></a></td>
         </tr>
         <?php }?>
     </table>
