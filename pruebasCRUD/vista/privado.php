@@ -119,7 +119,7 @@ include('../controlador/controlAcceso.php');
             <td><?= $evento->getDescripcion() ?></td>
             <td><?= $evento->getFecha_inicio() ?></td>
             <td><?= $evento->getFecha_fin() ?></td>
-            <td><a  href="modificarEvento.php?id=<?= $evento->getId_evento() ?>"><img src="../assets/icons/edit.png" alt="edit" width="20px" height="20px"></a></td>
+            <td><a  href="../modelo/funcionesCRUD/modificarEvento.php?id=<?= $evento->getId_evento() ?>"><img src="../assets/icons/edit.png" alt="edit" width="20px" height="20px"></a></td>
             <td><a  href="../modelo/funcionesCRUD/eliminarEvento.php?id=<?= $evento->getId_evento() ?>" onclick="javascript:return confirm('Estás seguro de eliminar el evento?')"><img src="../assets/icons/delete.png" alt="delete" width="20px" height="20px"></a></td>
         </tr>
         <?php }?>

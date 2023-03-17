@@ -77,11 +77,19 @@ class eventoSesiones extends evento implements interfazPersistencia{
     } 
   }
 
-  function modificar($evento){
-    if (isset($_SESSION["eventos"])) {
-      unset($_SESSION["eventos"]);
-      self::$eventos = array();
-  } 
+
+  /**
+   * Función a la que se le pasa un evento modificado y por id lo cambia por el almacenado que tiene el mismo id
+   */
+  function modificar($eventoModificado){
+    $eventos = unserialize($_SESSION["eventos"]);
+    foreach ($eventos as $id_evento => $evento){
+      if($evento->getId_evento() == $eventoModificado->getId_evento()){
+          $evento = $eventoModificado;
+      }
+    }
+    print_r( $eventoModificado);
+    $_SESSION["eventos"] = serialize($eventos);
   }
 
 

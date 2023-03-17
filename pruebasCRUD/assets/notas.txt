@@ -2,4 +2,11 @@ la instanciaci처n de la clase eventoSesiones no almacena los valores de los par�
 
 Comprobaciones: recogida en formulario  > instancia clase (params) > volcado del objeto en la sesi처n V > recuperaci처n del objeto V
 
-Los datos se recogen bien en el formulario?
+Los datos se recogen bien en el formulario?Si, corregido, el error se encontraba en la instanciaci처n de las clases.
+
+
+
+
+
+//Nueva funci처n del sistema:
+JSON + AJAX -> aplicado a eventos y usuarios en sus CRUD
