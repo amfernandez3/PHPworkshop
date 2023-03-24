@@ -48,7 +48,7 @@ class SelectorPersistente{
                 break;
             
             case 1:
-                //$evento =  new EventoMysql();
+                $evento =  EventosMysql::class;
                 break;
             
             case 2:

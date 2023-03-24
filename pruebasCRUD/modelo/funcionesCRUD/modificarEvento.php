@@ -57,7 +57,6 @@ foreach ($eventos as $key => $evento){
             $descripcion = ($_POST["descripcion"]);
         }
         else{
-            echo "entra";
         }
         if(!$_POST["fecha_ini"]==""){
             $fechaInicio = date('Y/d/m H:i',strtotime($_POST['fecha_ini']));

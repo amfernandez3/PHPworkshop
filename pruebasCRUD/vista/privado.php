@@ -2,12 +2,13 @@
 /**
  * Creamos los import que usaremos
  */
-require_once("../modelo/eventoSesiones.php");
-require_once("../modelo/evento.php");
-require_once("../modelo/usuario/usuarioSesiones.php");
-require_once("../modelo/usuario/usuario.php");
-require_once("../modelo/SelectorPersistencia.php");
-include('../controlador/controlAcceso.php');
+require_once(dirname(__FILE__)."/../modelo/eventoSesiones.php");
+require_once(dirname(__FILE__)."/../modelo/eventoMysql.php");
+require_once(dirname(__FILE__)."/../modelo/evento.php");
+require_once(dirname(__FILE__)."/../modelo/usuario/usuarioSesiones.php");
+require_once(dirname(__FILE__)."/../modelo/usuario/usuario.php");
+require_once(dirname(__FILE__)."/../modelo/SelectorPersistente.php");
+include(dirname(__FILE__).'/../controlador/controlAcceso.php');
 
 
 /**
@@ -35,9 +36,8 @@ include('../controlador/controlAcceso.php');
             $fechaFin = date('Y/d/m H:i',strtotime($_POST['fecha_fin']));
         }
 
-        //$evento = new eventoSesiones($idEvento,$idUsuario,$nombre,$descripcion,$fechaInicio,$fechaFin);
         $classEvento = SelectorPersistente::getEventoPersistente();
-        $evento = new $classEvento(null,$idUsuario,$nombre,$descripcion,$fechaInicio,$fechaFin);
+        $evento = new $classEvento(0,$idUsuario,$nombre,$descripcion,$fechaInicio,$fechaFin);
         $evento->guardar();
     
         $mensaje = "Logueado con la cuenta:" . $correo . " en persistencia: ". $classEvento;
@@ -51,13 +51,10 @@ include('../controlador/controlAcceso.php');
         }
     }
     /**
-     * Salida de error:
+     * Al ser un método abstracto, se realiza la llamada al método con :: y no con ->
      */
-    else{
-}
-    if(isset($_SESSION["eventos"])){
-        $eventos = unserialize($_SESSION["eventos"]);
-    }
+    $eventos = SelectorPersistente::getEventoPersistente()::listar();
+
     
 
 ?>
@@ -74,13 +71,13 @@ include('../controlador/controlAcceso.php');
 </head>
 <body>
     <header>
-    <p><?php echo $mensaje ?></p>
     <button class="btn btn-light"><a href="../controlador/cerrarSesion.php">Cerrar Sesión</a></button>
     <button class="btn btn-light"><a href="login.php">Login</a></button>
     <button class="btn btn-light"><a href="registro.php">Registro</a></button>
     <h2> AGENDA EVENTOS---------------------</h2>
     </header>
     <section>
+        <p> <?php echo "Hola ".$correo . ", tus eventos de ". SelectorPersistente::tipoPersistencia() . " son: " ?></p>
     <article id="eventos">
     <!-- Código que gestiona el envío de datos de evento -->
     <form action="" method="post" id="crearEventoForm">
@@ -102,7 +99,6 @@ include('../controlador/controlAcceso.php');
     <article id="tablaEventos">
     <table class='table table-bordered table-striped'>
         <tr>
-            <th>Id_evento</th>
             <th>Nombre</th>
             <th>Descripción</th>
             <th>Fecha_inicio</th>
@@ -114,7 +110,6 @@ include('../controlador/controlAcceso.php');
             foreach ($eventos as $id => $evento) {
                  ?>
         <tr>
-            <td><?= $evento->getId_evento() ?></td>
             <td><?= $evento->getNombre() ?></td>
             <td><?= $evento->getDescripcion() ?></td>
             <td><?= $evento->getFecha_inicio() ?></td>

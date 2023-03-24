@@ -83,12 +83,13 @@ class eventoSesiones extends evento implements interfazPersistencia{
    */
   function modificar($eventoModificado){
     $eventos = unserialize($_SESSION["eventos"]);
-    foreach ($eventos as $id_evento => $evento){
-      if($evento->getId_evento() == $eventoModificado->getId_evento()){
-          $evento = $eventoModificado;
+    $contadorAux = 0;
+    while($contadorAux < count($eventos)){
+      if($eventos[$contadorAux]->getId_evento() == $eventoModificado->getId_evento()){
+        $eventos[$contadorAux] = $eventoModificado;
       }
+      $contadorAux++;
     }
-    print_r( $eventoModificado);
     $_SESSION["eventos"] = serialize($eventos);
   }
 

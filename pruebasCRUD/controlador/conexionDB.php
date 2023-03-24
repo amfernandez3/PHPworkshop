@@ -1,5 +1,5 @@
 <?php
-
+//echo phpinfo();
 class BDMySql{
     private $conexion;
     private static $bd;
