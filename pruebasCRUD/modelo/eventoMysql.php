@@ -35,12 +35,12 @@ class EventosMysql extends Evento implements interfazPersistencia{
         return $eventos;
     }
 
-    function modificar($datos){
+    function modificar(){
         $stm = BDMySql::getConexion()->prepare("UPDATE evento SET nombre = :nombre , fecha_inicio = :fecha_inicio, fecha_fin= :fecha_fin where id_evento=:id");
-        $stm->execute([":nombre"=>$datos->getNombre(),
-        ":fecha_inicio"=>$datos->getFecha_inicio(),
-        ":fecha_fin"=>$datos->getFecha_fin(),
-        ":id"=>$datos->getId_evento()]);
+        $stm->execute([":nombre"=>$this->getNombre(),
+        ":fecha_inicio"=>$this->getFecha_inicio(),
+        ":fecha_fin"=>$this->getFecha_fin(),
+        ":id"=>$this->getId_evento()]);
     }
 
     static function eliminar($id){

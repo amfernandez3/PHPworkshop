@@ -10,7 +10,7 @@ interface interfazPersistencia{
 
     static function listar();
 
-     function modificar($datos);
+     function modificar();
 
      static function eliminar($id);
 

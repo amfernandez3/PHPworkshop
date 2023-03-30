@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once("evento.php");
 require_once('interfazPersistencia.php');
 class eventoSesiones extends evento implements interfazPersistencia{
@@ -39,6 +40,7 @@ class eventoSesiones extends evento implements interfazPersistencia{
   } else {
       self::$eventos = array();
   }
+  return self::$eventos;
   }
 
   /**
@@ -81,12 +83,12 @@ class eventoSesiones extends evento implements interfazPersistencia{
   /**
    * Función a la que se le pasa un evento modificado y por id lo cambia por el almacenado que tiene el mismo id
    */
-  function modificar($eventoModificado){
+  function modificar(){
     $eventos = unserialize($_SESSION["eventos"]);
     $contadorAux = 0;
     while($contadorAux < count($eventos)){
-      if($eventos[$contadorAux]->getId_evento() == $eventoModificado->getId_evento()){
-        $eventos[$contadorAux] = $eventoModificado;
+      if($eventos[$contadorAux]->getId_evento() == $this->getId_evento()){
+        $eventos[$contadorAux] = $this;
       }
       $contadorAux++;
     }

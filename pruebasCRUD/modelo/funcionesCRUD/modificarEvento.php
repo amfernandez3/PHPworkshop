@@ -2,8 +2,8 @@
 /**
  * Importamos las dependencias
  */
-require_once("../evento.php");
-require_once("../selectorPersistencia.php");
+require_once(dirname(__FILE__)."/../evento.php");
+require_once(dirname(__FILE__)."/../SelectorPersistente.php");
 
 /**
  * Iniciamos la sesión si no lo estuviese
@@ -71,7 +71,7 @@ foreach ($eventos as $key => $evento){
 
         $classEvento = SelectorPersistente::getEventoPersistente();
         $evento = new $classEvento($eventoSeleccionado->getId_evento(),$eventoSeleccionado->getId_usuario(),$nombre,$descripcion,$fechaInicio,$fechaFin);
-        $evento->modificar($evento);
+        $evento->modificar();
 
                 header("../../vista/privado.php");
     }
