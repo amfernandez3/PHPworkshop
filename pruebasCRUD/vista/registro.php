@@ -3,6 +3,7 @@
 Importamos las clases con las que trabajaremos
 */
 require_once("../modelo/usuario/usuarioSesiones.php");
+require_once(dirname(__FILE__)."/../modelo/SelectorPersistente.php");
 /*
 Contrastamos la información recibida por POST con la del modelo de persistencia seleccionado
 */
@@ -22,30 +23,15 @@ if(session_status() !== PHP_SESSION_ACTIVE){
         $correo = $_POST["correo"];
         $passwd = $_POST["password"];
         $nombre = $_POST["nombre"];
-        /**
-         * Generamos el id dinámico en base al tamaño de la sesión
-         */
-        //unset($_SESSION["usuarios"]);
-        $id;
-        if(isset($_SESSION["usuarios"])){
-            $id = count(unserialize($_SESSION["usuarios"]));
-        }
-        else{
-            $id = 0;
-        }
-        
-        $usuario = new usuarioSesiones($id, $nombre, $correo,"usuario",$passwd,false);
+      
 
-        //Comprobamos si el usuario  ya existe en la base de datos antes de añadirlo.
-        if($usuario->comprobarExisteUsuario($correo, $passwd)){
-            $mensaje = "El correo ya existe en la BD";
-        }
-        else{
-            $mensaje = "El usuario se añadió a la base de datos";
-            $usuario->guardarUsuario($usuario);
+            $classUsuario = SelectorPersistente::getUsuarioPersistente();
+            $usuario = new $classUsuario(0,$nombre,$correo,$password,"user",$fechaInicio,false);
+            $usuario->guardar();
             $_SESSION["usuarioLogueadoCorreo"] = $usuario->getCorreo();
+            $_SESSION["usuarioLogueadoRol"] = $usuario->getRol();
             header("location:../index.php");
-        }
+        
         
     }
 
@@ -71,6 +57,8 @@ if(session_status() !== PHP_SESSION_ACTIVE){
                 <input class="input form-control" type="email" name="correo" id="correo" required placeholder="Correo de usuario">
                 <label for="password" class="help-block">Contraseña: </label>
                 <input class="input form-control" type="password" name="password" id="password" required placeholder="Contraseña">
+                <label for="confirmPassword" class="help-block">Confirmar contraseña: </label>
+                <input class="input form-control" type="password" name="confirmPassword" id="confirmPassword" required placeholder="password">
                 <label for="selectorPersistencia">Selecciona la DB:</label>
                 <select class="selectorPersistencia form-control" name="selectorPersistencia" required>
                 <option value="0">Sesiones</option>
@@ -81,5 +69,6 @@ if(session_status() !== PHP_SESSION_ACTIVE){
         </form>
         <a class="badge-secondary" href="login.php">volver al login</a></td>
     </div>
+    <script src="../assets/js/funciones.js"></script>
 </body>
 </html>

@@ -74,6 +74,7 @@ include(dirname(__FILE__).'/../controlador/controlAcceso.php');
     <button class="btn btn-light"><a href="../controlador/cerrarSesion.php">Cerrar Sesión</a></button>
     <button class="btn btn-light"><a href="login.php">Login</a></button>
     <button class="btn btn-light"><a href="registro.php">Registro</a></button>
+    <button class="btn btn-light"><a href="gestionUsuarios.php">Gestión Usuarios</a></button>
     <h2> AGENDA EVENTOS---------------------</h2>
     </header>
     <section>

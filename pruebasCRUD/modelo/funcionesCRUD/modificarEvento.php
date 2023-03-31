@@ -73,7 +73,7 @@ foreach ($eventos as $key => $evento){
         $evento = new $classEvento($eventoSeleccionado->getId_evento(),$eventoSeleccionado->getId_usuario(),$nombre,$descripcion,$fechaInicio,$fechaFin);
         $evento->modificar();
 
-                header("../../vista/privado.php");
+                header("Location: ../../vista/privado.php");
     }
 
 ?>

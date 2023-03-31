@@ -69,19 +69,19 @@ class SelectorPersistente{
         $usuario =null;
         switch(self::persistenciaSeleccionada()){
             case 0: 
-                //$usuario=  new UsuarioSesiones();
+                $usuario = usuarioSesiones::class;
                 break;
             
             case 1:
-                //$usuario =  new UsuarioMysql();
+                $usuario = usuarioMysql::class;
                 break;
             
             case 2:
-                //$usuario =  new EventosMongo();
+                //$usuario = usuarioMongo::class;
                 break;
 
             default: 
-            //$usuario =  new UsuarioSesiones();
+            $usuario = usuarioSesiones::class;
             break;
         }
         return $usuario;
