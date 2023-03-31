@@ -1,0 +1,58 @@
+version: '3'
+services:
+ # Nginx server configuration   
+  web:
+    image: nginx:1.22
+    restart: always
+    container_name: webserver
+    depends_on:
+      - docker-mysql
+      - php
+    links:
+      - docker-mysql
+      - php
+    volumes:
+      # - D:/dawdu207/docker-php/html:/var/www/html
+      - C:/Users/dawdu207/Desktop/Dual44662476H:/var/www/html
+      - D:/dawdu207/docker-php/nginx:/etc/nginx/conf.d/
+    ports:
+      - "8080:80"
+ # Php-fpm configuration
+  php:
+    image: php:8.1-fpm
+    restart: always
+    volumes:
+      #- D:/dawdu207/docker-php/html:/var/www/html
+      - C:/Users/dawdu207/Desktop/Dual44662476H:/var/www/html
+      - D:/dawdu207/docker-php/php:/usr/local/etc/php/php.ini
+ # Mysql configuration
+  docker-mysql:
+    image: mysql:5.7
+    container_name: docker-mysql-demo
+    restart: always
+    environment:
+        - MYSQL_DATABASE=docker_demo
+        - MYSQL_ROOT_PASSWORD=root123
+
+    ports:
+        - "3308:3306"
+    volumes:
+        - D:/dawdu207/docker-php/dbdata:/var/lib/mysql
+        
+ # mongo conf
+  mongo:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: example
+      ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017/

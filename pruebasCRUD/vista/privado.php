@@ -19,15 +19,28 @@ include(dirname(__FILE__).'/../controlador/controlAcceso.php');
     $selector = "";
     $eventos = array();
     $idEvento;
-    $idUsuario;
-
+    $idUsuario = 0;
    
 
     /**
      * Control de datos de formulario -> añadir evento
      */
     if ($_SERVER["REQUEST_METHOD"]== "POST" && isset($_POST["nombre"]) && isset($_POST["descripcion"])&& isset($_POST["fecha_ini"]) ){
-        $idUsuario = usuarioSesiones::encontrarID($correo);
+        
+        $usuarios = SelectorPersistente::getUsuarioPersistente()::listar();
+        foreach ($usuarios as $id => $usuario){
+            if($usuario->getCorreo() == $_SESSION["usuarioLogueadoCorreo"]){
+                $idUsuario = $usuario->getIdUsuario();
+
+            }
+            if($usuario->getRol() == "admin"){
+                $_SESSION['usuarioLogueadoRol'] = "admin";
+            }
+            else{
+                $_SESSION['usuarioLogueadoRol'] = "user";
+            }
+        }
+
 
         $nombre = $_POST["nombre"];
         $descripcion = $_POST["descripcion"];
@@ -40,7 +53,7 @@ include(dirname(__FILE__).'/../controlador/controlAcceso.php');
         $evento = new $classEvento(0,$idUsuario,$nombre,$descripcion,$fechaInicio,$fechaFin);
         $evento->guardar();
     
-        $mensaje = "Logueado con la cuenta:" . $correo . " en persistencia: ". $classEvento;
+        $mensaje = "Logueado con la cuenta:" . $correo . " en persistencia: ". $classEvento ;
     }
     /**
      * Gestión del borrado de los eventos : cuando se envía el boton de borrado
@@ -74,11 +87,17 @@ include(dirname(__FILE__).'/../controlador/controlAcceso.php');
     <button class="btn btn-light"><a href="../controlador/cerrarSesion.php">Cerrar Sesión</a></button>
     <button class="btn btn-light"><a href="login.php">Login</a></button>
     <button class="btn btn-light"><a href="registro.php">Registro</a></button>
-    <button class="btn btn-light"><a href="gestionUsuarios.php">Gestión Usuarios</a></button>
+    <?php
+    if($_SESSION['usuarioLogueadoRol'] = "admin"){
+        ?>
+        <button class="btn btn-light"><a href="gestionUsuarios.php">Gestión Usuarios</a></button>
+        <?php
+    }
+    ?>
     <h2> AGENDA EVENTOS---------------------</h2>
     </header>
     <section>
-        <p> <?php echo "Hola ".$correo . ", tus eventos de ". SelectorPersistente::tipoPersistencia() . " son: " ?></p>
+        <p> <?php echo "Hola ".$correo . "tu rol es: ". $_SESSION['usuarioLogueadoRol'].", tus eventos de ". SelectorPersistente::tipoPersistencia() . " son: " ?></p>
     <article id="eventos">
     <!-- Código que gestiona el envío de datos de evento -->
     <form action="" method="post" id="crearEventoForm">
@@ -93,7 +112,6 @@ include(dirname(__FILE__).'/../controlador/controlAcceso.php');
                 <input class="boton btn btn-success" type="submit" value="Crear">
         </form>
         <form action="" method="POST">
-                <input class="boton btn btn-danger" type="submit" value="Borrar Eventos" name="borrarEventos">
                 <input class="boton btn btn-warning" type="submit" value="actualizar" name="actualizar">
         </form>
     </article>

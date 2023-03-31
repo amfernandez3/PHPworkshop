@@ -4,7 +4,7 @@
  */
 require_once("../modelo/usuario/usuarioSesiones.php");
 require_once("../modelo/usuario/usuario.php");
-
+require_once(dirname(__FILE__)."/../modelo/SelectorPersistente.php");
 /*
 Contrastamos la información recibida por POST con la del modelo de persistencia seleccionado
 */
@@ -26,17 +26,16 @@ if(session_status() !== PHP_SESSION_ACTIVE){
         /**
          * Cotejamos los datos introducidos con los de la base.
          */
-        if(isset($_SESSION["usuarios"])){
-            if(usuarioSesiones::comprobarLogin($correo,$passwd)){
-                $_SESSION["usuarioLogueadoCorreo"] = $correo;
+        $usuarios = SelectorPersistente::getUsuarioPersistente()::listar();
+        foreach ($usuarios as $id => $usuario){
+            if($usuario->getCorreo() == $correo && $usuario->getPassword() == $passwd){
+                $_SESSION['usuarioLogueadoCorreo'] = $usuario->getCorreo();
+                echo $usuario->getCorreo();
                 header("location:../index.php");
             }
-            else{
-                $mensaje = "Los datos no son correctos.";
+            if($usuario->getRol() == "admin"){
+                $_SESSION['usuarioLogueadoRol'] = "admin";
             }
-        }
-        else{
-            $mensaje = "No existen usuarios, regístrate!";
         }
         
     }

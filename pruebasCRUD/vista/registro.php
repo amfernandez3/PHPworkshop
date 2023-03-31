@@ -21,12 +21,12 @@ if(session_status() !== PHP_SESSION_ACTIVE){
             $_SESSION["selectorPersistencia"] = 0;
         }
         $correo = $_POST["correo"];
-        $passwd = $_POST["password"];
+        $password = $_POST["password"];
         $nombre = $_POST["nombre"];
       
 
             $classUsuario = SelectorPersistente::getUsuarioPersistente();
-            $usuario = new $classUsuario(0,$nombre,$correo,$password,"user",$fechaInicio,false);
+            $usuario = new $classUsuario(0,$nombre,$correo,"user",$password,false);
             $usuario->guardar();
             $_SESSION["usuarioLogueadoCorreo"] = $usuario->getCorreo();
             $_SESSION["usuarioLogueadoRol"] = $usuario->getRol();

@@ -7,11 +7,11 @@ class usuarioMysql extends usuario {
   }
   function guardar(){
     $stm = BDMySql::getConexion()->prepare("INSERT into usuario(nombre, correo, rol, password) values(:nombre,:correo,:rol,:password)"); 
-            $stm->execute(["
-            :nombre"=>$this->getNombre(),"
-            :correo"=>$this->getCorreo(),"
-            :rol"=>$this->getRol(),"
-            :password"=>$this->getPassword()]);
+            $stm->execute([
+              ":nombre"=>$this->getNombre(),
+              ":correo"=>$this->getCorreo(),
+              ":rol"=>$this->getRol(),
+              ":password"=>$this->getPassword()]);
 }
 
 static function listar(){
@@ -44,5 +44,3 @@ static function eliminar($id){
 }
 
 }
-
-?>

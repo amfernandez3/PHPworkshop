@@ -74,34 +74,20 @@ if(session_status() !== PHP_SESSION_ACTIVE){
             <th>Nombre</th>
             <th>Correo</th>
             <th>Rol</th>
-            
-            <?php
-                if(isset($_SESSION['usuarioLogueadoRol']) && $_SESSION['usuarioLogueadoRol'] == "admin"){
-                    ?>
-                <th>ID</th>
-                <th>Modificar</th>
-                <th>Eliminar</th>
-            <?php
-                }
-            ?>
+            <th>ID</th>
+            <th>Modificar</th>
+            <th>Eliminar</th>
         </tr>
         <?php
-            foreach ($usuarios as $id => $usuario) {
-                 ?>
+foreach ($usuarios as $id => $usuario) {
+    ?>
         <tr>
             <td><?= $usuario->getNombre() ?></td>
             <td><?= $usuario->getCorreo() ?></td>
             <td><?= $usuario->getRol() ?></td>
-            <?php
-            if (isset($_SESSION['usuarioLogueadoRol']) && $_SESSION['usuarioLogueadoRol'] == "admin") {
-                ?>
-                    <td><?= $usuario->getIdUsuario() ?></td>
-                    <td><a href="../modelo/funcionesCRUD/modificarUsuario.php?id=<?= $usuario->getIdUsuario() ?>"><img src="../assets/icons/edit.png" alt="edit" width="20px" height="20px"></a></td>
-                    <td><a href="../modelo/funcionesCRUD/eliminarUsuario.php?id=<?= $usuario->getIdUsuario() ?>" onclick="javascript:return confirm('Estás seguro de eliminar el evento?')"><img src="../assets/icons/delete.png" alt="delete" width="20px" height="20px"></a></td>
-        
-            <?php
-                }
-            ?>
+            <td><?= $usuario->getIdUsuario() ?></td>
+            <td><a href="../modelo/funcionesCRUD/modificarUsuario.php?id=<?= $usuario->getIdUsuario() ?>"><img src="../assets/icons/edit.png" alt="edit" width="20px" height="20px"></a></td>
+            <td><a href="../modelo/funcionesCRUD/eliminarUsuario.php?id=<?= $usuario->getIdUsuario() ?>" onclick="javascript:return confirm('Estás seguro de eliminar el evento?')"><img src="../assets/icons/delete.png" alt="delete" width="20px" height="20px"></a></td>
             </tr>
         <?php }?>
     </table>

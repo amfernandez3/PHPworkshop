@@ -19,20 +19,14 @@ if(session_status() !== PHP_SESSION_ACTIVE){
  */
 $mensaje = "";
 $id = $_GET['id'];
-$nombre="";
-$correo = "";
-$rol="";
-$password="";
+$nombre ="";
+$correo ="";
+$rol = "";
+$password = "";
 
 $usuarioSeleccionado;
 
-if(isset($_SESSION["usuarios"])){
-    $usuarios = unserialize($_SESSION["usuarios"]);
-}
-else{
-    $usuarios = array();
-    header(dirname(__FILE__)."/../vista/privado.php");
-}
+$usuarios = SelectorPersistente::getUsuarioPersistente()::listar();
 
 
 /**
@@ -47,30 +41,29 @@ foreach ($usuarios as $key => $usuario){
     /**
      * Función que comprueba que si se reciben los datos, estos sobreescriban los previos del evento.
      */
-    if ($_SERVER["REQUEST_METHOD"]=="POST"){
-
-        if(!$_POST["nombre"]==""){
-            $nombre = ($_POST["nombre"]);
+if ($_SERVER["REQUEST_METHOD"]=="POST") {
+    if (!$_POST["nombre"]=="") {
+        $nombre = ($_POST["nombre"]);
+    }
+    if (!$_POST["correo"]=="") {
+        $correo = ($_POST["correo"]);
+    }
+    if (!$_POST["rol"]=="") {
+        $rol = ($_POST["rol"]);
+        if (!$_POST["password"]=="") {
+            $password = $_POST['password'];
         }
-        if(!$_POST["correo"]==""){
-            $correo = ($_POST["correo"]);
-        }
-        if(!$_POST["password"]==""){
-            $password = ($_POST["password"]);
-        }
-        if($_POST["rol"]!=""){
-            $rol = ($_POST["rol"]);
-        }
-       
 
         $classUsuario = SelectorPersistente::getUsuarioPersistente();
-        $usuario = new $classUsuario($usuarioSeleccionado->getIdUsuario(),$nombre,$correo,$rol,$password,false);
+        $usuario = new $classUsuario($id, $nombre, $correo, $rol, $password, false);
         $usuario->modificar();
 
         header("Location: ../../vista/gestionUsuarios.php");
     }
+}
 
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -83,24 +76,23 @@ foreach ($usuarios as $key => $usuario){
     <title>Modificar usuario</title>
 </head>
 <body>
-    <div class="modificarUsuario">
+        <div class="modificarUsuario">
         <h2>Modificar usuario:</h2>
-        <form action="" method="post" id="crearUsuarioForm">
+        <form action="" method="post">
                 <label for="nombre" class="help-block">Nombre del usuario: </label>
-                <input class="input form-control" type="text" name="nombre" id="nombre" required placeholder="Nombre" value="<?=$usuarioSeleccionado->getNombre();?>">
+                <input class="input form-control" type="text" name="nombre" id="nombre" value="<?=$usuario->getNombre();?>">
                 <label for="correo" class="help-block">correo: </label>
-                <input class="input form-control" type="email" name="correo" id="correo" required placeholder="Correo" value="<?=$usuarioSeleccionado->getCorreo();?>">
+                <input class="input form-control" type="email" name="correo" id="correo" value="<?=$usuario->getCorreo();?>">
                 <label for="password" class="help-block">contraseña: </label>
-                <input class="input form-control" type="password" name="password" id="password" required placeholder="password" value="<?=$usuarioSeleccionado->getPassword();?>">
+                <input class="input form-control" type="password" name="password" id="password" value="<?=$usuario->getPassword();?>">
                 <label for="confirmPassword" class="help-block">Confirmar contraseña: </label>
-                <input class="input form-control" type="password" name="confirmPassword" id="confirmPassword" required placeholder="password" value="<?=$usuarioSeleccionado->getPassword();?>">
+                <input class="input form-control" type="password" name="confirmPassword" id="confirmPassword" value="<?=$usuario->getPassword();?>">
                 <label for="rol" class="help-block">Rol (admin o user): </label>
-                <input class="input form-control" type="text" name="rol" id="rol" required placeholder="Rol" value="<?=$usuarioSeleccionado->getRol();?>">
+                <input class="input form-control" type="text" name="rol" id="rol" value="<?=$usuario->getRol();?>">
                
                 <input class="boton btn btn-success" type="submit" value="Modificar">
         </form>
     </div>
     <button class="btn btn-light"><a href="../../vista/gestionUsuarios.php">Cancelar</a></button>
-    <script src="../../assets/js/funciones.js"></script>
 </body>
 </html>

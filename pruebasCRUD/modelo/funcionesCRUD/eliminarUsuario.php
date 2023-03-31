@@ -12,5 +12,6 @@ $id = $_GET['id'];
  * Método que recorre el array de usuarios, buscando por id_usuario y elimina
  */
 $usuarios = SelectorPersistente::getUsuarioPersistente()::eliminar($id);
-//header("../../vista/privado.php");
-header(dirname(__FILE__)."/../vista/privado.php");
+header("location:../../vista/gestionUsuarios.php");
+//header(dirname(__FILE__)."/../vista/privado.php");
+exit();

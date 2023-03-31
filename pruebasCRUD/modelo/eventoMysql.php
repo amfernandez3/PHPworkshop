@@ -1,7 +1,7 @@
 <?php
 require_once(dirname(__FILE__)."/../controlador/conexionDB.php");
 //require_once("../controlador/conexionDB.php");
-require_once("interfazPersistencia.php");
+//require_once("interfazPersistencia.php");
 if(session_status() !== PHP_SESSION_ACTIVE){
     session_start();
 }

@@ -27,13 +27,7 @@ $fecha_fin="";
 
 $eventoSeleccionado;
 
-if(isset($_SESSION["eventos"])){
-    $eventos = unserialize($_SESSION["eventos"]);
-}
-else{
-    $eventos = array();
-    header("../../vista/privado.php");
-}
+$eventos = SelectorPersistente::getEventoPersistente()::listar();
 
 
 /**
@@ -93,7 +87,7 @@ foreach ($eventos as $key => $evento){
     <div class="modificarEvento">
         <h2>Modificar evento:</h2>
         <form action="" method="post">
-
+            
             <label for="nombre" class="help-block">Nombre del evento: </label>
             <input class="input form-control" type="text" name="nombre" id="nombre"  value="<?=$eventoSeleccionado->getNombre();?>">
             <label for="descripcion" class="help-block">Descripción: </label>
